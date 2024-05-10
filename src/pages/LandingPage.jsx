@@ -1,10 +1,11 @@
 import React from "react";
 import { Button, Col, Container, Image, Row } from "react-bootstrap";
 import SearchBar from "../components/searchbar.jsx";
+import ProductCard from "../components/productCard";
 
 const LandingPage = () => {
   return (
-    <Container>
+    <Container className="d-flex flex-column min-vh-100">
       {/* Landing Page Mobile layout */}
       <Row className="justify-content-center align-items-center d-md-none mt-4">
         <Col xs={11} sm={8}>
@@ -61,16 +62,14 @@ const LandingPage = () => {
       </Row>
 
       {/* Venues section */}
-      <Row className="mt-5 fs-1">
-        <Col>
-          <h3 className="text-center fw-bold fs-5">Venues</h3>
-          <h4 className="text-center fs-5">Find Your Perfect Holiday Venue</h4>
+      <Row className="mt-auto">
+        <Col className="text-center">
+          <h3 className="fw-bold fs-5">Venues</h3>
+          <h4 className="fs-5">Find Your Perfect Holiday Venue</h4>
           <SearchBar />
         </Col>
       </Row>
-      <Row className="justify-content-center mt-3">
-        <Col xs={11} sm={8} md={6}></Col>
-      </Row>
+      <ProductCard />
     </Container>
   );
 };
