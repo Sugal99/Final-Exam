@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Button, Col, Container, Image, Row } from "react-bootstrap";
-import SearchBar from "../components/searchbar.jsx";
-import ProductCard from "../components/productCard";
+import VenuesSection from "../components/VenuesSection";
 
 const LandingPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -63,15 +62,7 @@ const LandingPage = () => {
         </Col>
       </Row>
 
-      {/* Venues section */}
-      <Row className="mt-auto">
-        <Col className="text-center">
-          <h3 className="fw-bold fs-5">Venues</h3>
-          <h4 className="fs-5">Find Your Perfect Holiday Venue</h4>
-          <SearchBar setSearchTerm={setSearchTerm} />
-        </Col>
-      </Row>
-      <ProductCard searchTerm={searchTerm} />
+      <VenuesSection searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
     </Container>
   );
 };
