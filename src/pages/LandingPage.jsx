@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button, Col, Container, Image, Row } from "react-bootstrap";
 import SearchBar from "../components/searchbar.jsx";
 import ProductCard from "../components/productCard";
 
 const LandingPage = () => {
+  const [searchTerm, setSearchTerm] = useState("");
+
   return (
     <Container className="d-flex flex-column min-vh-100">
       {/* Landing Page Mobile layout */}
@@ -66,10 +68,10 @@ const LandingPage = () => {
         <Col className="text-center">
           <h3 className="fw-bold fs-5">Venues</h3>
           <h4 className="fs-5">Find Your Perfect Holiday Venue</h4>
-          <SearchBar />
+          <SearchBar setSearchTerm={setSearchTerm} />
         </Col>
       </Row>
-      <ProductCard />
+      <ProductCard searchTerm={searchTerm} />
     </Container>
   );
 };
