@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Card, Button, Row, Col } from "react-bootstrap";
+import { Card, Button, Row, Col, Alert } from "react-bootstrap";
 import { getAllVenues } from "./services.jsx/api/VenuesApi";
 import { truncateText } from "./utils/textUtils";
 import { StarFill } from "react-bootstrap-icons";
@@ -40,9 +40,13 @@ const ProductCard = ({ searchTerm }) => {
 
   return (
     <div>
-      <Row xs={1} md={2} lg={3} className="g-4 mt-5">
-        {Array.isArray(filteredVenues) &&
-          filteredVenues.map((venue, index) => (
+      {filteredVenues.length === 0 ? (
+        <Alert variant="info" className="mt-3 text-center">
+          No venues found, sorry!
+        </Alert>
+      ) : (
+        <Row xs={1} md={2} lg={3} className="g-4 mt-5">
+          {filteredVenues.map((venue, index) => (
             <Col key={venue.id}>
               <Card className="h-100 position-relative">
                 <div>
@@ -113,7 +117,8 @@ const ProductCard = ({ searchTerm }) => {
               </Card>
             </Col>
           ))}
-      </Row>
+        </Row>
+      )}
     </div>
   );
 };
