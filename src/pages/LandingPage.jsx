@@ -1,9 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Button, Col, Container, Image, Row } from "react-bootstrap";
 import VenuesSection from "../components/VenuesSection";
 
 const LandingPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
+  const venuesRef = useRef(null);
+
+  const scrollToVenues = () => {
+    if (venuesRef.current) {
+      venuesRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  };
 
   return (
     <Container className="d-flex flex-column min-vh-100">
@@ -25,6 +32,7 @@ const LandingPage = () => {
           <Button
             className="rounded-pill"
             style={{ backgroundColor: "#FFA100" }}
+            onClick={scrollToVenues}
           >
             View Venues
           </Button>
@@ -34,11 +42,11 @@ const LandingPage = () => {
       {/* Landing Page Desktop layout */}
       <Row className="py-5 justify-content-center align-items-center d-none d-md-flex">
         <Col md={6} lg={6} className="text-md-right">
-          <h2 className="fw-bold text-wrap fs-1">
+          <h2 className="fw-bold text-wrap fs-1 mb-4">
             Find Your
             <br /> Perfect Holiday <br /> Venue with Holidaze!
           </h2>
-          <p className="text-muted text-wrap fs-6">
+          <p className="text-muted text-wrap fs-6 mb-4">
             Lorem ipsum dolor sit amet, consectetur <br />
             adipiscing elit. Integer sed massa blandit,
             <br /> faucibus quam sed, feugiat massa.
@@ -46,6 +54,7 @@ const LandingPage = () => {
           <Button
             className="rounded-pill"
             style={{ backgroundColor: "#FFA100" }}
+            onClick={scrollToVenues}
           >
             View Venues
           </Button>
@@ -62,7 +71,12 @@ const LandingPage = () => {
         </Col>
       </Row>
 
-      <VenuesSection searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+      {/* Venues section */}
+      <VenuesSection
+        ref={venuesRef}
+        searchTerm={searchTerm}
+        setSearchTerm={setSearchTerm}
+      />
     </Container>
   );
 };

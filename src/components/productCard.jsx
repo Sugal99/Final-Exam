@@ -45,7 +45,7 @@ const ProductCard = ({ searchTerm }) => {
           No venues found, sorry!
         </Alert>
       ) : (
-        <Row xs={1} md={2} lg={3} className="g-4 mt-1">
+        <Row xs={1} md={2} lg={3} className="g-4 mt-2">
           {filteredVenues.map((venue, index) => (
             <Col key={venue.id}>
               <Card className="h-100 position-relative">
