@@ -3,9 +3,14 @@ const BASE_URL = "https://v2.api.noroff.dev/holidaze";
 
 const VENUES_ENDPOINT = `${BASE_URL}/venues`;
 
-export const getAllVenues = async () => {
+export const getAllVenues = async (includeOwner = false) => {
+  const queryParams = new URLSearchParams();
+  if (includeOwner) {
+    queryParams.append("_owner", true);
+  }
+
   try {
-    const response = await fetch(VENUES_ENDPOINT);
+    const response = await fetch(`${VENUES_ENDPOINT}?${queryParams}`);
     const data = await response.json();
     return data;
   } catch (error) {
@@ -13,7 +18,6 @@ export const getAllVenues = async () => {
     throw error;
   }
 };
-
 export const getVenueById = async (id) => {
   try {
     const response = await fetch(`${VENUES_ENDPOINT}/${id}`);
