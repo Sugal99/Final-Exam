@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Card, Button, Row, Col, Alert } from "react-bootstrap";
-import { getAllVenues } from "./services.jsx/api/VenuesApi";
+import { Card, Button, Row, Col } from "react-bootstrap";
+import { Link } from "react-router-dom"; // Import Link from react-router-dom
+import { getAllVenues } from "../services.jsx/api/VenuesApi";
 import { truncateText } from "./utils/textUtils";
 import { StarFill } from "react-bootstrap-icons";
 
@@ -40,14 +41,16 @@ const ProductCard = ({ searchTerm }) => {
 
   return (
     <div>
-      {filteredVenues.length === 0 ? (
-        <Alert variant="info" className="mt-3 text-center">
-          No venues found, sorry!
-        </Alert>
-      ) : (
-        <Row xs={1} md={2} lg={3} className="g-4 mt-2">
-          {filteredVenues.map((venue, index) => (
-            <Col key={venue.id}>
+      {filteredVenues.length === 0 && (
+        <div className="text-center my-3">
+          <p>No venues found, sorry!</p>
+        </div>
+      )}
+      <Row xs={1} md={2} lg={3} className="g-4 mt-2">
+        {filteredVenues.map((venue, index) => (
+          <Col key={venue.id}>
+            {/* Wrap Card component with Link */}
+            <Link to={`/SingleVenuePages/${venue.id}`} className="card-link">
               <Card className="h-100 position-relative">
                 <div>
                   <Card.Img
@@ -115,10 +118,10 @@ const ProductCard = ({ searchTerm }) => {
                   </Button>
                 </Card.Body>
               </Card>
-            </Col>
-          ))}
-        </Row>
-      )}
+            </Link>
+          </Col>
+        ))}
+      </Row>
     </div>
   );
 };

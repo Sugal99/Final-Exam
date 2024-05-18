@@ -17,7 +17,7 @@ const LandingPage = () => {
       {/* Landing Page Mobile layout */}
       <Row className="justify-content-center align-items-center d-md-none mt-4">
         <Col xs={11} sm={8}>
-          <Image src="/Group2.png" alt="Holiday Venue" fluid rounded />
+          <Image src="/HeaderImage.png" alt="Holiday Venue" fluid rounded />
         </Col>
       </Row>
       <Row className="justify-content-center d-md-none">
@@ -42,7 +42,7 @@ const LandingPage = () => {
       {/* Landing Page Desktop layout */}
       <Row className="py-5 justify-content-center align-items-center d-none d-md-flex">
         <Col md={6} lg={6} className="text-md-right">
-          <h2 className="fw-bold text-wrap fs-1 mb-4">
+          <h2 className="fw-bold text-wrap fs-1 mb-2">
             Find Your
             <br /> Perfect Holiday <br /> Venue with Holidaze!
           </h2>
@@ -61,7 +61,7 @@ const LandingPage = () => {
         </Col>
         <Col md={6} className="text-md-left">
           <Image
-            src="/Group2.png"
+            src="/HeaderImage.png"
             alt="Holiday Venue"
             fluid
             rounded

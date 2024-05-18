@@ -18,9 +18,14 @@ export const getAllVenues = async (includeOwner = false) => {
     throw error;
   }
 };
-export const getVenueById = async (id) => {
+export const getVenueById = async (id, includeOwner = true) => {
+  const queryParams = new URLSearchParams();
+  if (includeOwner) {
+    queryParams.append("_owner", true);
+  }
+
   try {
-    const response = await fetch(`${VENUES_ENDPOINT}/${id}`);
+    const response = await fetch(`${VENUES_ENDPOINT}/${id}?${queryParams}`);
     const data = await response.json();
     return data;
   } catch (error) {
