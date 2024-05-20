@@ -12,6 +12,16 @@ import MetaAccordion from "../components/MetaAccordion.jsx";
 const fallBackImage = "/placeholder.gif";
 const fallBackAvatar = "/placeholder.gif";
 
+const handleImageError = (e) => {
+  e.target.onerror = null;
+  e.target.src = fallBackImage;
+};
+
+const handleAvatarError = (e) => {
+  e.target.onerror = null;
+  e.target.src = fallBackAvatar;
+};
+
 const SingleVenuePage = () => {
   const { id } = useParams();
   const [venue, setVenue] = useState(null);
@@ -40,6 +50,8 @@ const SingleVenuePage = () => {
     return <div>Loading...</div>;
   }
 
+  const avatarUrl = venue.owner?.avatar?.url || fallBackAvatar;
+
   return (
     <Container className="mt-1">
       <Row className="justify-content-center">
@@ -49,16 +61,15 @@ const SingleVenuePage = () => {
             style={{ width: "calc(100% - 2rem)" }}
           >
             <div className="d-flex align-items-center">
-              {venue.owner?.avatar && (
-                <img
-                  src={venue.owner.avatar.url}
-                  alt={venue.owner.avatar.alt}
-                  className="rounded-circle me-2"
-                  style={{ width: "40px", height: "40px", objectFit: "cover" }}
-                />
-              )}
+              <img
+                src={avatarUrl}
+                alt={venue.owner?.avatar?.alt || "Avatar"}
+                className="rounded-circle me-2"
+                style={{ width: "40px", height: "40px", objectFit: "cover" }}
+                onError={handleAvatarError}
+              />
               <span className="text-dark bg-light px-2 py-1 rounded">
-                {venue.owner.name}
+                {venue.owner?.name}
               </span>
             </div>
             <div className="py-1" style={{ marginLeft: "1rem" }}>
@@ -76,7 +87,7 @@ const SingleVenuePage = () => {
                 ))}
             </div>
           </div>
-          <h2 className="">{venue.name}</h2>
+          <h2>{venue.name}</h2>
         </Col>
       </Row>
       <Row className="justify-content-center mt-5">
@@ -88,7 +99,8 @@ const SingleVenuePage = () => {
                   <img
                     className="d-block w-100 rounded"
                     src={image.url || fallBackImage}
-                    alt={venue.name}
+                    alt={image.alt || venue.name}
+                    onError={handleImageError}
                   />
                 </Carousel.Item>
               ))
@@ -98,6 +110,7 @@ const SingleVenuePage = () => {
                   className="d-block w-100 rounded"
                   src={fallBackImage}
                   alt="Not available"
+                  onError={handleImageError}
                 />
               </Carousel.Item>
             )}
@@ -111,19 +124,9 @@ const SingleVenuePage = () => {
               description={venue.description}
               price={venue.price}
               maxGuests={venue.maxGuests}
-              fallBackImage={fallBackImage}
-              fallBackAvatar={fallBackAvatar}
             />
-            <LocationAccordion
-              location={venue.location}
-              fallBackImage={fallBackImage}
-              fallBackAvatar={fallBackAvatar}
-            />
-            <MetaAccordion
-              meta={venue.meta}
-              fallBackImage={fallBackImage}
-              fallBackAvatar={fallBackAvatar}
-            />
+            <LocationAccordion location={venue.location} />
+            <MetaAccordion meta={venue.meta} />
           </Accordion>
         </Col>
       </Row>

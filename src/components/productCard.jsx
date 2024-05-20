@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Card, Button, Row, Col } from "react-bootstrap";
-import { Link } from "react-router-dom"; // Import Link from react-router-dom
+import { Link } from "react-router-dom";
 import { getAllVenues } from "../services.jsx/api/VenuesApi";
 import { truncateText } from "./utils/textUtils";
 import { StarFill } from "react-bootstrap-icons";
@@ -25,14 +25,14 @@ const ProductCard = ({ searchTerm }) => {
     fetchVenues();
   }, []);
 
-  const handleImageError = (index, type) => {
-    const updatedVenues = [...venues];
-    if (type === "media") {
-      updatedVenues[index].media[0].url = fallBackImage;
-    } else if (type === "avatar") {
-      updatedVenues[index].owner.avatar.url = fallBackAvatar;
-    }
-    setVenues(updatedVenues);
+  const handleImageError = (e) => {
+    e.target.onerror = null;
+    e.target.src = fallBackImage;
+  };
+
+  const handleAvatarError = (e) => {
+    e.target.onerror = null;
+    e.target.src = fallBackAvatar;
   };
 
   const filteredVenues = venues.filter((venue) =>
@@ -47,9 +47,8 @@ const ProductCard = ({ searchTerm }) => {
         </div>
       )}
       <Row xs={1} md={2} lg={3} className="g-4 mt-2">
-        {filteredVenues.map((venue, index) => (
+        {filteredVenues.map((venue) => (
           <Col key={venue.id}>
-            {/* Wrap Card component with Link */}
             <Link to={`/SingleVenuePages/${venue.id}`} className="card-link">
               <Card className="h-100 position-relative">
                 <div>
@@ -60,7 +59,7 @@ const ProductCard = ({ searchTerm }) => {
                         ? venue.media[0].url
                         : fallBackImage
                     }
-                    onError={() => handleImageError(index, "media")}
+                    onError={handleImageError}
                     className="card-img-top"
                     style={{ height: "200px", objectFit: "cover" }}
                   />
@@ -76,7 +75,7 @@ const ProductCard = ({ searchTerm }) => {
                       alt={
                         venue.owner.avatar ? venue.owner.avatar.alt : "Avatar"
                       }
-                      onError={() => handleImageError(index, "avatar")}
+                      onError={handleAvatarError}
                       className="rounded-circle me-2"
                       style={{ width: "30px", height: "30px" }}
                     />
