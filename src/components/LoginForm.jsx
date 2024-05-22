@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Container, Row, Col, Form, Button, Alert } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
-import { createApiKey } from "../services/api/AuthApi";
+import { createApiKey } from "../services.jsx/api/AuthApi";
 
 const BASE_URL = "https://v2.api.noroff.dev"; // Base URL
 

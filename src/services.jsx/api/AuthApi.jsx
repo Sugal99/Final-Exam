@@ -18,6 +18,7 @@ export const createApiKey = async (accessToken) => {
     }
 
     const data = await response.json();
+    console.log("API Key created:", data);
     return data.data.key;
   } catch (error) {
     console.error("Error creating API key:", error);
