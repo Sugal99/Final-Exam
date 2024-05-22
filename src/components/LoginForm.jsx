@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Container, Row, Col, Form, Button, Alert } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const BASE_URL = "https://v2.api.noroff.dev"; // Base URL
 
@@ -122,6 +123,14 @@ const LoginForm = () => {
                 Login
               </Button>
             </Form>
+            <div className="text-center mt-3">
+              <p className="text-white">Dont have an account?</p>
+              <Link to="/Register">
+                <Button variant="link" className="text-white">
+                  Register
+                </Button>
+              </Link>
+            </div>
           </div>
         </Col>
       </Row>
