@@ -19,3 +19,5 @@ const Bookings = () => {
 if (error) {
   return <div>Error: {error}</div>;
 }
+
+export default Bookings;
