@@ -80,7 +80,7 @@ const RegisterForm = () => {
   return (
     <Container className="mt-5">
       <Row className="justify-content-center">
-        <Col xs={12} md={9} lg={5}>
+        <Col xs={12} md={8} lg={6} xl={4}>
           <div
             className="p-4 rounded"
             style={{

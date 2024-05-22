@@ -54,7 +54,7 @@ const LoginForm = () => {
 
       // Redirect to another page after successful login
       setTimeout(() => {
-        navigate("/"); // Replace with your desired path
+        navigate("/");
       }, 2000);
     } catch (error) {
       console.error("Error logging in user:", error);
@@ -65,7 +65,8 @@ const LoginForm = () => {
   return (
     <Container className="mt-5">
       <Row className="justify-content-center">
-        <Col xs={12} md={6} lg={4}>
+        <Col xs={12} md={8} lg={6} xl={4}>
+          {" "}
           <div
             className="p-4 rounded"
             style={{
@@ -75,10 +76,10 @@ const LoginForm = () => {
           >
             <div className="text-center mb-4">
               <img
-                src="/HOLIDAZE Logo - BigCommerce Store Logo with Transparent Background.png" // Replace with your logo image path
+                src="/HOLIDAZE Logo - BigCommerce Store Logo with Transparent Background.png"
                 className="d-inline-block align-top img-fluid"
                 alt="logo"
-                style={{ width: "250px", height: "auto", marginLeft: "-2rem" }} // Adjust width and height as needed
+                style={{ width: "250px", height: "auto", marginLeft: "-2rem" }}
               />
             </div>
             <h3 className="text-center mb-3 font-weight-bold text-white">
