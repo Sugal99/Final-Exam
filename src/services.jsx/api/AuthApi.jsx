@@ -13,5 +13,9 @@ export const createApiKey = async (accessToken) => {
         name: "My API Key name", // Optional
       }),
     });
+    if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to create API key");
+      }
 
     
