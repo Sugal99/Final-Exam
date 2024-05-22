@@ -45,6 +45,7 @@ const SingleVenuePage = () => {
         const { data } = await getVenueById(id);
         console.log("Fetched Venue Data:", data);
         setVenue(data);
+        // Call the utility function to fetch bookings
       } catch (error) {
         console.error("Error fetching venue:", error);
         setError(error.message);

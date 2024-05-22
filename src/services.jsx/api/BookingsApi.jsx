@@ -2,6 +2,43 @@ const BASE_URL = "https://v2.api.noroff.dev";
 
 const BOOKINGS_ENDPOINT = `${BASE_URL}/holidaze/bookings`;
 
+export const getAllBookings = async () => {
+  try {
+    const accessToken = localStorage.getItem("accessToken");
+    const apiKey = localStorage.getItem("apiKey");
+    console.log("Access Token:", accessToken); // Log the token
+    console.log("API Key:", apiKey); // Log the API key
+
+    const response = await fetch(
+      "https://v2.api.noroff.dev/holidaze/bookings",
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "X-Noroff-API-Key": apiKey,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    console.log("Response status:", response.status); // Log the response status
+    console.log("Response status text:", response.statusText); // Log the response status text
+
+    if (!response.ok) {
+      console.error(`Error: ${response.status} ${response.statusText}`);
+      throw new Error(
+        `Failed to fetch bookings: ${response.status} ${response.statusText}`
+      );
+    }
+
+    const data = await response.json();
+    console.log("Response data:", data); // Log the response data
+    return data;
+  } catch (error) {
+    console.error("Error fetching bookings:", error);
+    throw error;
+  }
+};
+
 export const getBookingById = async (id) => {
   try {
     const response = await fetch(`${BOOKINGS_ENDPOINT}/${id}`);
