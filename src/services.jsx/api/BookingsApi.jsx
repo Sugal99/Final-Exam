@@ -1,6 +1,6 @@
-const BASE_URL = "https://v2.api.noroff.dev/holidaze";
+const BASE_URL = "https://v2.api.noroff.dev";
 
-const BOOKINGS_ENDPOINT = `${BASE_URL}/bookings`;
+const BOOKINGS_ENDPOINT = `${BASE_URL}/holidaze/bookings`;
 
 export const getBookingById = async (id) => {
   try {
@@ -18,7 +18,7 @@ export const createBooking = async (booking) => {
   const accessToken = localStorage.getItem("accessToken");
 
   try {
-    const response = await fetch(`${BASE_URL}/bookings`, {
+    const response = await fetch(`${BASE_URL}/holidaze/bookings`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
