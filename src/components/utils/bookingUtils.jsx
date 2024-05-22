@@ -15,3 +15,7 @@ const Bookings = () => {
     fetchBookings();
   }, []);
 };
+
+if (error) {
+  return <div>Error: {error}</div>;
+}
