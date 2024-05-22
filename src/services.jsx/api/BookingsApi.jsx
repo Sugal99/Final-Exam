@@ -14,14 +14,25 @@ export const getBookingById = async (id) => {
 };
 
 export const createBooking = async (booking) => {
+  const apiKey = localStorage.getItem("apiKey");
+  const accessToken = localStorage.getItem("accessToken");
+
   try {
-    const response = await fetch(BOOKINGS_ENDPOINT, {
+    const response = await fetch(`${BASE_URL}/bookings`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+        "X-Noroff-API-Key": apiKey,
       },
       body: JSON.stringify(booking),
     });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || "Failed to create booking");
+    }
+
     const data = await response.json();
     return data;
   } catch (error) {
