@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Container, Row, Col, Form, Button, Alert } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { createApiKey } from "../services/api/AuthApi";
 
 const BASE_URL = "https://v2.api.noroff.dev"; // Base URL
 
@@ -50,8 +51,14 @@ const LoginForm = () => {
       const data = await response.json();
       console.log("Login successful:", data);
       setSuccess("Login successful! Redirecting...");
-      // Store the access token or any other required data
-      localStorage.setItem("accessToken", data.data.accessToken);
+
+      // Store the access token
+      const accessToken = data.data.accessToken;
+      localStorage.setItem("accessToken", accessToken);
+
+      // Fetch and/or generate the API key
+      const apiKey = await createApiKey(accessToken);
+      localStorage.setItem("apiKey", apiKey);
 
       // Redirect to another page after successful login
       setTimeout(() => {

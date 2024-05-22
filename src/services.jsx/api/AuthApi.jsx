@@ -9,7 +9,7 @@ export const createApiKey = async (accessToken) => {
         Authorization: `Bearer ${accessToken}`,
       },
       body: JSON.stringify({
-        name: "My API Key name", // Optional
+        name: "My API Key name",
       }),
     });
     if (!response.ok) {
@@ -18,7 +18,7 @@ export const createApiKey = async (accessToken) => {
     }
 
     const data = await response.json();
-    return data.data.key; // Return the API key
+    return data.data.key;
   } catch (error) {
     console.error("Error creating API key:", error);
     throw error;
