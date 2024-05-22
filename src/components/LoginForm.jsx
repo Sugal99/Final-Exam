@@ -18,9 +18,9 @@ const LoginForm = () => {
               {/* Logo */}
               <img
                 src="/HOLIDAZE Logo - BigCommerce Store Logo with Transparent Background.png" // Replace with your logo image path
-                className="d-inline-block align-top img-fluid  "
+                className="d-inline-block align-top img-fluid"
                 alt="logo"
-                style={{ maxWidth: "172px" }}
+                style={{ width: "250px", height: "auto", marginLeft: "-2rem" }} // Adjust width and height as needed
               />
             </div>
             <h3 className="text-center mb-3 font-weight-bold text-white ">
