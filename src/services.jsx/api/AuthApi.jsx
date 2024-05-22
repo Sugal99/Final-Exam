@@ -1,4 +1,3 @@
-
 const BASE_URL = "https://v2.api.noroff.dev"; // Base URL
 
 export const createApiKey = async (accessToken) => {
@@ -14,8 +13,14 @@ export const createApiKey = async (accessToken) => {
       }),
     });
     if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "Failed to create API key");
-      }
+      const errorData = await response.json();
+      throw new Error(errorData.message || "Failed to create API key");
+    }
 
-    
+    const data = await response.json();
+    return data.data.key; // Return the API key
+  } catch (error) {
+    console.error("Error creating API key:", error);
+    throw error;
+  }
+};
