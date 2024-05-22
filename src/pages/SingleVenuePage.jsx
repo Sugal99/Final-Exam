@@ -11,7 +11,7 @@ import {
 } from "react-bootstrap";
 import { getVenueById } from "../services.jsx/api/VenuesApi";
 import { StarFill } from "react-bootstrap-icons";
-import { createBooking } from "../services.jsx/api/BookingsApi"; // Import createBooking function
+import { createBooking } from "../services.jsx/api/BookingsApi";
 
 import InformationAccordion from "../components/InformationAccordion.jsx";
 import LocationAccordion from "../components/LocationAccordion.jsx";
@@ -36,8 +36,8 @@ const SingleVenuePage = () => {
   const [venue, setVenue] = useState(null);
   const [error, setError] = useState(null);
   const [guests, setGuests] = useState(1);
-  const [startDate, setStartDate] = useState(""); // State to hold start date
-  const [endDate, setEndDate] = useState(""); // State to hold end date
+  const [dateFrom, setdateFrom] = useState("");
+  const [dateTo, setdateTo] = useState("");
 
   useEffect(() => {
     const fetchVenue = async () => {
@@ -66,12 +66,12 @@ const SingleVenuePage = () => {
     setGuests((prev) => Math.max(1, prev + amount));
   };
 
-  const handleStartDateChange = (event) => {
-    setStartDate(event.target.value);
+  const handledateFromChange = (event) => {
+    setdateFrom(event.target.value);
   };
 
-  const handleEndDateChange = (event) => {
-    setEndDate(event.target.value);
+  const handledateToChange = (event) => {
+    setdateTo(event.target.value);
   };
 
   const handleBooking = async () => {
@@ -79,8 +79,8 @@ const SingleVenuePage = () => {
       // Prepare booking object
       const booking = {
         venueId: id,
-        startDate,
-        endDate,
+        dateFrom: new Date(dateFrom).toISOString(),
+        dateTo: new Date(dateTo).toISOString(),
         guests,
       };
 
@@ -89,8 +89,8 @@ const SingleVenuePage = () => {
       console.log("Booking created:", createdBooking);
 
       // Clear form fields after successful booking
-      setStartDate("");
-      setEndDate("");
+      setdateFrom("");
+      setdateTo("");
       setGuests(1);
     } catch (error) {
       console.error("Error creating booking:", error);
@@ -192,8 +192,8 @@ const SingleVenuePage = () => {
                 type="date"
                 placeholder="Choose Start Date"
                 className="text-muted"
-                value={startDate}
-                onChange={handleStartDateChange}
+                value={dateFrom}
+                onChange={handledateFromChange}
               />
             </Form.Group>
             <Form.Group className="mb-3">
@@ -202,8 +202,8 @@ const SingleVenuePage = () => {
                 type="date"
                 placeholder="Choose End Date"
                 className="text-muted"
-                value={endDate}
-                onChange={handleEndDateChange}
+                value={dateTo}
+                onChange={handledateToChange}
               />
             </Form.Group>
             <Form.Group className="mb-3">
@@ -230,7 +230,7 @@ const SingleVenuePage = () => {
               variant="primary"
               type="button"
               style={{ backgroundColor: "#FFA100" }}
-              onClick={handleBooking} // Handle booking button click
+              onClick={handleBooking}
             >
               Book Now
             </Button>
