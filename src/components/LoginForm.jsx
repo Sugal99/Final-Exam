@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Container, Row, Col, Form, Button, Alert } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { createApiKey } from "../services.jsx/api/AuthApi";
 
 const BASE_URL = "https://v2.api.noroff.dev"; // Base URL
@@ -11,7 +10,8 @@ const LoginForm = () => {
     email: "",
     password: "",
   });
-  const [error, setError] = useState(null);
+
+  const [errors, setErrors] = useState({});
   const [success, setSuccess] = useState(null);
   const navigate = useNavigate();
 
@@ -23,10 +23,37 @@ const LoginForm = () => {
     });
   };
 
+  const validateForm = () => {
+    const newErrors = {};
+
+    // Validate email field
+    if (!formData.email) {
+      newErrors.email = "Email is required.";
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = "Email must be a valid email address.";
+    } else if (!formData.email.endsWith("@stud.noroff.no")) {
+      newErrors.email = "Email must be a valid stud.noroff.no email address.";
+    }
+
+    // Validate password field
+    if (!formData.password) {
+      newErrors.password = "Password is required.";
+    } else if (formData.password.length < 8) {
+      newErrors.password = "Password must be at least 8 characters long.";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(null); // Clear previous errors
+    setErrors({}); // Clear previous errors
     setSuccess(null); // Clear previous success messages
+
+    if (!validateForm()) {
+      return;
+    }
 
     const user = {
       email: formData.email,
@@ -66,7 +93,7 @@ const LoginForm = () => {
       }, 2000);
     } catch (error) {
       console.error("Error logging in user:", error);
-      setError(error.message); // Display the error message
+      setErrors({ submit: error.message }); // Display the error message
     }
   };
 
@@ -74,7 +101,6 @@ const LoginForm = () => {
     <Container className="mt-5">
       <Row className="justify-content-center">
         <Col xs={12} md={8} lg={6} xl={4}>
-          {" "}
           <div
             className="p-4 rounded"
             style={{
@@ -93,9 +119,9 @@ const LoginForm = () => {
             <h3 className="text-center mb-3 font-weight-bold text-white">
               Login
             </h3>
-            {error && (
+            {errors.submit && (
               <Alert variant="danger" className="text-center">
-                {error}
+                {errors.submit}
               </Alert>
             )}
             {success && (
@@ -103,7 +129,7 @@ const LoginForm = () => {
                 {success}
               </Alert>
             )}
-            <Form onSubmit={handleSubmit}>
+            <Form noValidate onSubmit={handleSubmit}>
               <Form.Group controlId="email" className="mb-3">
                 <Form.Label>Email</Form.Label>
                 <Form.Control
@@ -112,8 +138,12 @@ const LoginForm = () => {
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
+                  isInvalid={!!errors.email}
                   required
                 />
+                <Form.Control.Feedback type="invalid">
+                  {errors.email}
+                </Form.Control.Feedback>
               </Form.Group>
               <Form.Group controlId="password" className="mb-3">
                 <Form.Label>Password</Form.Label>
@@ -123,15 +153,19 @@ const LoginForm = () => {
                   name="password"
                   value={formData.password}
                   onChange={handleChange}
+                  isInvalid={!!errors.password}
                   required
                 />
+                <Form.Control.Feedback type="invalid">
+                  {errors.password}
+                </Form.Control.Feedback>
               </Form.Group>
               <Button variant="warning" type="submit" className="w-100">
                 Login
               </Button>
             </Form>
             <div className="text-center mt-3">
-              <p className="text-white">Dont have an account?</p>
+              <p className="text-white">Don't have an account?</p>
               <Link to="/Register">
                 <Button variant="link" className="text-white">
                   Register
