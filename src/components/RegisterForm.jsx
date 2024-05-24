@@ -11,7 +11,7 @@ const RegisterForm = () => {
     password: "",
   });
 
-  const [error, setError] = useState(null);
+  const [errors, setErrors] = useState({});
   const [success, setSuccess] = useState(null);
 
   const handleChange = (e) => {
@@ -22,20 +22,29 @@ const RegisterForm = () => {
     });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError(null); // Clear previous errors
-    setSuccess(null); // Clear previous success messages
+  const validateForm = () => {
+    const newErrors = {};
 
     // Validate email domain
     if (!formData.email.endsWith("@stud.noroff.no")) {
-      setError("Email must be a valid stud.noroff.no email address.");
-      return;
+      newErrors.email = "Email must be a valid stud.noroff.no email address.";
     }
 
     // Validate password length
     if (formData.password.length < 8) {
-      setError("Password must be at least 8 characters long.");
+      newErrors.password = "Password must be at least 8 characters long.";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setErrors({}); // Clear previous errors
+    setSuccess(null); // Clear previous success messages
+
+    if (!validateForm()) {
       return;
     }
 
@@ -73,7 +82,7 @@ const RegisterForm = () => {
       setSuccess("Registration successful! You can now log in.");
     } catch (error) {
       console.error("Error registering user:", error);
-      setError(error.message); // Update to display just the error message
+      setErrors({ submit: error.message }); // Update to display just the error message
     }
   };
 
@@ -99,9 +108,9 @@ const RegisterForm = () => {
             <h3 className="text-center mb-3 font-weight-bold text-white">
               Register
             </h3>
-            {error && (
+            {errors.submit && (
               <Alert variant="danger" className="text-center">
-                {error}
+                {errors.submit}
               </Alert>
             )}
             {success && (
@@ -109,7 +118,7 @@ const RegisterForm = () => {
                 {success}
               </Alert>
             )}
-            <Form onSubmit={handleSubmit}>
+            <Form noValidate onSubmit={handleSubmit}>
               <Form.Group controlId="name" className="mb-3">
                 <Form.Label>Name</Form.Label>
                 <Form.Control
@@ -118,8 +127,12 @@ const RegisterForm = () => {
                   name="name"
                   value={formData.name}
                   onChange={handleChange}
+                  isInvalid={!!errors.name}
                   required
                 />
+                <Form.Control.Feedback type="invalid">
+                  {errors.name}
+                </Form.Control.Feedback>
               </Form.Group>
               <Form.Group controlId="email" className="mb-3">
                 <Form.Label>Email</Form.Label>
@@ -129,8 +142,12 @@ const RegisterForm = () => {
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
+                  isInvalid={!!errors.email}
                   required
                 />
+                <Form.Control.Feedback type="invalid">
+                  {errors.email}
+                </Form.Control.Feedback>
               </Form.Group>
               <Form.Group controlId="password" className="mb-3">
                 <Form.Label>Password</Form.Label>
@@ -140,8 +157,12 @@ const RegisterForm = () => {
                   name="password"
                   value={formData.password}
                   onChange={handleChange}
+                  isInvalid={!!errors.password}
                   required
                 />
+                <Form.Control.Feedback type="invalid">
+                  {errors.password}
+                </Form.Control.Feedback>
               </Form.Group>
 
               <Button variant="warning" type="submit" className="w-100">
