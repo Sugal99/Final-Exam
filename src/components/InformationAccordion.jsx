@@ -1,5 +1,6 @@
 import React from "react";
 import { Accordion } from "react-bootstrap";
+import { truncateText } from "./utils/textUtils";
 
 const InformationAccordion = ({ description, price, maxGuests }) => {
   return (
@@ -11,7 +12,7 @@ const InformationAccordion = ({ description, price, maxGuests }) => {
           {description !== null &&
           description !== undefined &&
           description !== ""
-            ? description
+            ? truncateText(description, 50)
             : "No description available yet!"}
         </p>
         <p>
