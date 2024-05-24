@@ -8,9 +8,11 @@ const InformationAccordion = ({ description, price, maxGuests }) => {
       <Accordion.Body>
         <p>
           <strong>Description:</strong>{" "}
-          {description !== null && description !== undefined
+          {description !== null &&
+          description !== undefined &&
+          description !== ""
             ? description
-            : "Not Available"}
+            : "No description available yet!"}
         </p>
         <p>
           <strong>Price:</strong>{" "}
