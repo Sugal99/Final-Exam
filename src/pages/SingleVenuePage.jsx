@@ -15,6 +15,7 @@ import { StarFill } from "react-bootstrap-icons";
 import InformationAccordion from "../components/InformationAccordion";
 import LocationAccordion from "../components/LocationAccordion";
 import MetaAccordion from "../components/MetaAccordion";
+import { truncateText } from "../components/utils/textUtils";
 
 // Fallback images
 const fallBackImage = "/placeholder.gif";
@@ -139,7 +140,7 @@ const SingleVenuePage = () => {
                 ))}
             </div>
           </div>
-          <h2>{venue.name}</h2>
+          <h2>{truncateText(venue.name, 20)}</h2>
         </Col>
       </Row>
       <Row className="justify-content-center mt-5">

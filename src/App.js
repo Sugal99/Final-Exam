@@ -6,7 +6,6 @@ import LandingPage from "./pages/LandingPage"; // Import your ContactPage compon
 import SingleVenuePage from "./pages/SingleVenuePage"; // Import your ContactPage component
 import Register from "./pages/RegisterPage"; // Import your ContactPage component
 import Login from "./pages/LoginPage"; // Import your ContactPage component
-import Test from "./components/utils/bookingUtils.jsx"; // Import your ContactPage component
 
 function App() {
   return (
