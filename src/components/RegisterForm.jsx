@@ -26,6 +26,7 @@ const RegisterForm = () => {
   const validateForm = () => {
     const newErrors = {};
 
+    // Validate name field
     if (!formData.name) {
       newErrors.name = "Name is required.";
     } else if (!/^[a-zA-Z0-9_]+$/.test(formData.name)) {
@@ -68,6 +69,7 @@ const RegisterForm = () => {
       name: formData.name,
       email: formData.email,
       password: formData.password,
+      venueManager: formData.venueManager,
     };
 
     try {
