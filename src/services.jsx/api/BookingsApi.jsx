@@ -3,49 +3,50 @@ const BASE_URL = "https://v2.api.noroff.dev";
 const BOOKINGS_ENDPOINT = `${BASE_URL}/holidaze/bookings`;
 
 export const getAllBookings = async () => {
+  const accessToken = localStorage.getItem("accessToken");
+  const apiKey = localStorage.getItem("apiKey");
+
+  const response = await fetch(
+    "https://v2.api.noroff.dev/holidaze/bookings?_venue=true",
+    {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        "X-Noroff-API-Key": apiKey,
+        "Content-Type": "application/json",
+      },
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+
+  return await response.json();
+};
+
+export const getBookingById = async (venueId) => {
   try {
     const accessToken = localStorage.getItem("accessToken");
     const apiKey = localStorage.getItem("apiKey");
-    console.log("Access Token:", accessToken); // Log the token
-    console.log("API Key:", apiKey); // Log the API key
 
-    const response = await fetch(
-      "https://v2.api.noroff.dev/holidaze/bookings",
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          "X-Noroff-API-Key": apiKey,
-          "Content-Type": "application/json",
-        },
-      }
-    );
-
-    console.log("Response status:", response.status); // Log the response status
-    console.log("Response status text:", response.statusText); // Log the response status text
+    const response = await fetch(`${BOOKINGS_ENDPOINT}?venueId=${venueId}`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        "X-Noroff-API-Key": apiKey,
+        "Content-Type": "application/json",
+      },
+    });
 
     if (!response.ok) {
-      console.error(`Error: ${response.status} ${response.statusText}`);
       throw new Error(
         `Failed to fetch bookings: ${response.status} ${response.statusText}`
       );
     }
 
     const data = await response.json();
-    console.log("Response data:", data); // Log the response data
-    return data;
+    return data.data || [];
   } catch (error) {
-    console.error("Error fetching bookings:", error);
-    throw error;
-  }
-};
-
-export const getBookingById = async (id) => {
-  try {
-    const response = await fetch(`${BOOKINGS_ENDPOINT}/${id}`);
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error("Error fetching booking by id:", error);
+    console.error("Error fetching bookings by venue id:", error);
     throw error;
   }
 };
@@ -65,16 +66,23 @@ export const createBooking = async (booking) => {
       body: JSON.stringify(booking),
     });
 
-    if (!response.ok) {
+    if (response.ok) {
+      // Booking successfully created
+      const data = await response.json();
+      return data;
+    } else if (response.status === 409) {
+      // Conflict - handle accordingly
+      console.error("Conflict occurred:", response.statusText);
+      // You can capture and handle the conflict scenario here
+      throw new Error("Booking conflict occurred");
+    } else {
+      // Handle other error scenarios
       const errorData = await response.json();
       throw new Error(errorData.message || "Failed to create booking");
     }
-
-    const data = await response.json();
-    return data;
   } catch (error) {
     console.error("Error creating booking:", error);
-    throw error;
+    throw error; // Propagate the error to the caller
   }
 };
 

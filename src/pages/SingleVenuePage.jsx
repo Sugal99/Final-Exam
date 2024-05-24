@@ -10,12 +10,11 @@ import {
   Form,
 } from "react-bootstrap";
 import { getVenueById } from "../services.jsx/api/VenuesApi";
-import { StarFill } from "react-bootstrap-icons";
 import { createBooking } from "../services.jsx/api/BookingsApi";
-
-import InformationAccordion from "../components/InformationAccordion.jsx";
-import LocationAccordion from "../components/LocationAccordion.jsx";
-import MetaAccordion from "../components/MetaAccordion.jsx";
+import { StarFill } from "react-bootstrap-icons";
+import InformationAccordion from "../components/InformationAccordion";
+import LocationAccordion from "../components/LocationAccordion";
+import MetaAccordion from "../components/MetaAccordion";
 
 // Fallback images
 const fallBackImage = "/placeholder.gif";
@@ -38,6 +37,7 @@ const SingleVenuePage = () => {
   const [guests, setGuests] = useState(1);
   const [dateFrom, setdateFrom] = useState("");
   const [dateTo, setdateTo] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     const fetchVenue = async () => {
@@ -45,7 +45,6 @@ const SingleVenuePage = () => {
         const { data } = await getVenueById(id);
         console.log("Fetched Venue Data:", data);
         setVenue(data);
-        // Call the utility function to fetch bookings
       } catch (error) {
         console.error("Error fetching venue:", error);
         setError(error.message);
@@ -77,7 +76,6 @@ const SingleVenuePage = () => {
 
   const handleBooking = async () => {
     try {
-      // Prepare booking object
       const booking = {
         venueId: id,
         dateFrom: new Date(dateFrom).toISOString(),
@@ -85,7 +83,6 @@ const SingleVenuePage = () => {
         guests,
       };
 
-      // Send request to create booking
       const createdBooking = await createBooking(booking);
       console.log("Booking created:", createdBooking);
 
@@ -93,11 +90,16 @@ const SingleVenuePage = () => {
       setdateFrom("");
       setdateTo("");
       setGuests(1);
+      setErrorMessage(""); // Clear any previous error messages
     } catch (error) {
       console.error("Error creating booking:", error);
+      if (error.response && error.response.status === 409) {
+        setErrorMessage("Selected dates are already booked.");
+      } else {
+        setErrorMessage("Selected dates are already booked.");
+      }
     }
   };
-
   return (
     <Container className="mt-1">
       <Row className="justify-content-center">
@@ -207,6 +209,18 @@ const SingleVenuePage = () => {
                 onChange={handledateToChange}
               />
             </Form.Group>
+            {errorMessage && (
+              <Row className="justify-content-center mt-3">
+                <Col xs={12} md={8}>
+                  <div className="text-center">
+                    <div className="alert alert-danger p-3" role="alert">
+                      {errorMessage}
+                    </div>
+                  </div>
+                </Col>
+              </Row>
+            )}
+
             <Form.Group className="mb-3">
               <Form.Label>Guests</Form.Label>
               <div className="d-flex align-items-center">
