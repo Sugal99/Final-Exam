@@ -9,6 +9,7 @@ const RegisterForm = () => {
     name: "",
     email: "",
     password: "",
+    venueManager: false,
   });
 
   const [errors, setErrors] = useState({});
@@ -179,6 +180,7 @@ const RegisterForm = () => {
                   {errors.password}
                 </Form.Control.Feedback>
               </Form.Group>
+
               <Form.Group controlId="venueManager" className="mb-3">
                 <Form.Check
                   type="checkbox"
