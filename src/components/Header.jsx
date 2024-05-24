@@ -9,6 +9,8 @@ const Header = () => {
     // Clear accessToken and apiKey from localStorage
     localStorage.removeItem("accessToken");
     localStorage.removeItem("apiKey");
+    localStorage.removeItem("venueManager");
+
     // Redirect to the login page
     navigate("/Login");
   };
