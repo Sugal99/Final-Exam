@@ -179,6 +179,15 @@ const RegisterForm = () => {
                   {errors.password}
                 </Form.Control.Feedback>
               </Form.Group>
+              <Form.Group controlId="venueManager" className="mb-3">
+                <Form.Check
+                  type="checkbox"
+                  label="Venue Manager"
+                  name="venueManager"
+                  checked={formData.venueManager}
+                  onChange={handleChange}
+                />
+              </Form.Group>
 
               <Button variant="warning" type="submit" className="w-100">
                 Register
