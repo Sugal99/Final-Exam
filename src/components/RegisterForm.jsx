@@ -25,13 +25,28 @@ const RegisterForm = () => {
   const validateForm = () => {
     const newErrors = {};
 
-    // Validate email domain
-    if (!formData.email.endsWith("@stud.noroff.no")) {
+    if (!formData.name) {
+      newErrors.name = "Name is required.";
+    } else if (!/^[a-zA-Z0-9_]+$/.test(formData.name)) {
+      newErrors.name =
+        "Name can only contain letters, numbers, and underscores.";
+    } else if (formData.name.length > 20) {
+      newErrors.name = "Name cannot be greater than 20 characters.";
+    }
+
+    // Validate email field
+    if (!formData.email) {
+      newErrors.email = "Email is required.";
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = "Email must be a valid email address.";
+    } else if (!formData.email.endsWith("@stud.noroff.no")) {
       newErrors.email = "Email must be a valid stud.noroff.no email address.";
     }
 
-    // Validate password length
-    if (formData.password.length < 8) {
+    // Validate password field
+    if (!formData.password) {
+      newErrors.password = "Password is required.";
+    } else if (formData.password.length < 8) {
       newErrors.password = "Password must be at least 8 characters long.";
     }
 
@@ -82,7 +97,7 @@ const RegisterForm = () => {
       setSuccess("Registration successful! You can now log in.");
     } catch (error) {
       console.error("Error registering user:", error);
-      setErrors({ submit: error.message }); // Update to display just the error message
+      setErrors({ submit: error.message }); // Display the error message
     }
   };
 
