@@ -1,7 +1,18 @@
 import React from "react";
 import { Navbar, Nav, Container } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    // Clear accessToken and apiKey from localStorage
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("apiKey");
+    // Redirect to the login page
+    navigate("/Login");
+  };
+
   return (
     <Navbar expand="lg" style={{ backgroundColor: "#FFA100" }}>
       <Container fluid>
@@ -18,13 +29,22 @@ const Header = () => {
           id="responsive-navbar-nav"
           className="justify-content-end"
         >
-          <Nav>
-            <Nav.Link href="#home" className="text-white">
-              {" "}
+          <Nav className="ml-auto">
+            <Nav.Link href="/" className="text-white ">
               Home
             </Nav.Link>
-            <Nav.Link href="#signin" className="text-white">
-              Sign In
+            <Nav.Link href="#bookings" className="text-white">
+              Bookings
+            </Nav.Link>
+            <Nav.Link href="/venues" className="text-white">
+              Venues
+            </Nav.Link>
+            <Nav.Link
+              href="#logout"
+              className="text-white"
+              onClick={handleLogout}
+            >
+              Log out
             </Nav.Link>
           </Nav>
         </Navbar.Collapse>
