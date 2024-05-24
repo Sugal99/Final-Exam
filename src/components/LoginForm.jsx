@@ -61,7 +61,7 @@ const LoginForm = () => {
     };
 
     try {
-      const response = await fetch(`${BASE_URL}/auth/login`, {
+      const response = await fetch(`${BASE_URL}/auth/login?_holidaze=true`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -76,6 +76,8 @@ const LoginForm = () => {
       }
 
       const data = await response.json();
+      console.log("API Response Data:", data); // Log the entire data object
+
       console.log("Login successful:", data);
       setSuccess("Login successful! Redirecting...");
 
@@ -86,6 +88,12 @@ const LoginForm = () => {
       // Fetch and/or generate the API key
       const apiKey = await createApiKey(accessToken);
       localStorage.setItem("apiKey", apiKey);
+
+      console.log("Venue Manager status:", data.data.venueManager);
+      localStorage.setItem(
+        "venueManager",
+        data.data.venueManager ? "true" : "false"
+      );
 
       // Redirect to another page after successful login
       setTimeout(() => {

@@ -12,6 +12,12 @@ const Header = () => {
     // Redirect to the login page
     navigate("/Login");
   };
+  console.log(
+    "Venue Manager in localStorage:",
+    localStorage.getItem("venueManager")
+  );
+
+  const venueManager = localStorage.getItem("venueManager") === "true";
 
   return (
     <Navbar expand="lg" style={{ backgroundColor: "#FFA100" }}>
@@ -36,9 +42,11 @@ const Header = () => {
             <Nav.Link href="#bookings" className="text-white">
               Bookings
             </Nav.Link>
-            <Nav.Link href="/venues" className="text-white">
-              Venues
-            </Nav.Link>
+            {venueManager && (
+              <Nav.Link href="/venues" className="text-white">
+                Venues
+              </Nav.Link>
+            )}
             <Nav.Link
               href="#logout"
               className="text-white"
