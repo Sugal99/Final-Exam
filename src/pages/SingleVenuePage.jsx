@@ -38,6 +38,7 @@ const SingleVenuePage = () => {
   const [dateFrom, setdateFrom] = useState("");
   const [dateTo, setdateTo] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [bookingSuccess, setBookingSuccess] = useState(false);
 
   useEffect(() => {
     const fetchVenue = async () => {
@@ -91,6 +92,7 @@ const SingleVenuePage = () => {
       setdateTo("");
       setGuests(1);
       setErrorMessage(""); // Clear any previous error messages
+      setBookingSuccess(true); // Show booking success message
     } catch (error) {
       console.error("Error creating booking:", error);
       if (error.response && error.response.status === 409) {
@@ -188,68 +190,89 @@ const SingleVenuePage = () => {
       </Row>
       <Row className="justify-content-center mt-3">
         <Col xs={12} md={8}>
-          <Form>
-            <Form.Group className="mb-3">
-              <Form.Label>Start Date</Form.Label>
-              <Form.Control
-                type="date"
-                placeholder="Choose Start Date"
-                className="text-muted"
-                value={dateFrom}
-                onChange={handledateFromChange}
-              />
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>End Date</Form.Label>
-              <Form.Control
-                type="date"
-                placeholder="Choose End Date"
-                className="text-muted"
-                value={dateTo}
-                onChange={handledateToChange}
-              />
-            </Form.Group>
-            {errorMessage && (
-              <Row className="justify-content-center mt-3">
-                <Col xs={12} md={8}>
-                  <div className="text-center">
-                    <div className="alert alert-danger p-3" role="alert">
-                      {errorMessage}
-                    </div>
-                  </div>
-                </Col>
-              </Row>
-            )}
-
-            <Form.Group className="mb-3">
-              <Form.Label>Guests</Form.Label>
-              <div className="d-flex align-items-center">
-                <Button
-                  onClick={() => handleGuestChange(-1)}
-                  style={{ backgroundColor: "#FFA100" }}
-                  className="rounded-pill"
-                >
-                  -
-                </Button>
-                <span className="mx-2">{guests}</span>
-                <Button
-                  onClick={() => handleGuestChange(1)}
-                  style={{ backgroundColor: "#FFA100" }}
-                  className="rounded-pill"
-                >
-                  +
-                </Button>
+          {bookingSuccess ? (
+            <div className="text-center mb-3">
+              <div className="alert alert-success" role="alert">
+                Booking created!
               </div>
-            </Form.Group>
-            <Button
-              variant="primary"
-              type="button"
-              style={{ backgroundColor: "#FFA100" }}
-              onClick={handleBooking}
-            >
-              Book Now
-            </Button>
-          </Form>
+              <Button
+                variant="primary"
+                style={{ backgroundColor: "#FFA100" }}
+                onClick={() => {
+                  // Handle "Check out bookings" button click
+                }}
+              >
+                Check out your bookings!
+              </Button>
+            </div>
+          ) : (
+            <Form>
+              <Form.Group className="mb-3">
+                <Form.Label>Start Date</Form.Label>
+                <Form.Control
+                  type="date"
+                  placeholder="Choose Start Date"
+                  className="text-muted"
+                  value={dateFrom}
+                  onChange={handledateFromChange}
+                />
+              </Form.Group>
+              <Form.Group className="mb-3">
+                <Form.Label>End Date</Form.Label>
+                <Form.Control
+                  type="date"
+                  placeholder="Choose
+                  End Date"
+                  className="text-muted"
+                  value={dateTo}
+                  onChange={handledateToChange}
+                />
+              </Form.Group>
+              {errorMessage && (
+                <Row className="justify-content-center mt-3">
+                  <Col xs={12} md={8}>
+                    <div className="text-center">
+                      <div className="alert alert-danger p-3" role="alert">
+                        {errorMessage}
+                      </div>
+                    </div>
+                  </Col>
+                </Row>
+              )}
+              <Form.Group className="mb-3">
+                <Form.Label>Guests</Form.Label>
+                <div className="d-flex align-items-center">
+                  <Button
+                    onClick={() => handleGuestChange(-1)}
+                    style={{ backgroundColor: "#FFA100" }}
+                    className="rounded-pill"
+                  >
+                    -
+                  </Button>
+                  <span className="mx-2">{guests}</span>
+                  <Button
+                    onClick={() => handleGuestChange(1)}
+                    style={{ backgroundColor: "#FFA100" }}
+                    className="rounded-pill"
+                  >
+                    +
+                  </Button>
+                </div>
+              </Form.Group>
+              {bookingSuccess ? (
+                <div className="text-center mb-3">Booking created!</div>
+              ) : (
+                <Button
+                  variant="primary"
+                  type="button"
+                  style={{ backgroundColor: "#FFA100" }}
+                  onClick={handleBooking}
+                >
+                  Book Now
+                </Button>
+              )}
+            </Form>
+          )}
         </Col>
       </Row>
     </Container>
