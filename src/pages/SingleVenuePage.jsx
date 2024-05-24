@@ -40,8 +40,12 @@ const SingleVenuePage = () => {
   const [dateTo, setdateTo] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [bookingSuccess, setBookingSuccess] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
+    const accessToken = localStorage.getItem("accessToken");
+    setIsLoggedIn(accessToken ? true : false);
+
     const fetchVenue = async () => {
       try {
         const { data } = await getVenueById(id);
@@ -78,6 +82,11 @@ const SingleVenuePage = () => {
 
   const handleBooking = async () => {
     try {
+      if (!dateFrom || !dateTo) {
+        setErrorMessage("Please select dates first.");
+        return;
+      }
+
       const booking = {
         venueId: id,
         dateFrom: new Date(dateFrom).toISOString(),
@@ -88,18 +97,17 @@ const SingleVenuePage = () => {
       const createdBooking = await createBooking(booking);
       console.log("Booking created:", createdBooking);
 
-      // Clear form fields after successful booking
       setdateFrom("");
       setdateTo("");
       setGuests(1);
-      setErrorMessage(""); // Clear any previous error messages
-      setBookingSuccess(true); // Show booking success message
+      setErrorMessage("");
+      setBookingSuccess(true);
     } catch (error) {
       console.error("Error creating booking:", error);
       if (error.response && error.response.status === 409) {
         setErrorMessage("Selected dates are already booked.");
       } else {
-        setErrorMessage("Selected dates are already booked.");
+        setErrorMessage("selected dates are already booked.");
       }
     }
   };
@@ -140,7 +148,7 @@ const SingleVenuePage = () => {
                 ))}
             </div>
           </div>
-          <h2>{truncateText(venue.name, 20)}</h2>
+          <h2>{truncateText(venue.name)}</h2>
         </Col>
       </Row>
       <Row className="justify-content-center mt-5">
@@ -191,13 +199,92 @@ const SingleVenuePage = () => {
       </Row>
       <Row className="justify-content-center mt-3">
         <Col xs={12} md={8}>
-          {bookingSuccess ? (
+          {!bookingSuccess && (
+            <>
+              <Form>
+                <Form.Group className="mb-3">
+                  <Form.Label>Start Date</Form.Label>
+                  <Form.Control
+                    type="date"
+                    placeholder="Choose Start Date"
+                    className="text-muted"
+                    value={dateFrom}
+                    onChange={handledateFromChange}
+                  />
+                </Form.Group>
+                <Form.Group className="mb-3">
+                  <Form.Label>End Date</Form.Label>
+                  <Form.Control
+                    type="date"
+                    placeholder="Choose End Date"
+                    className="text-muted"
+                    value={dateTo}
+                    onChange={handledateToChange}
+                  />
+                </Form.Group>
+                {isLoggedIn && (
+                  <Form.Group className="mb-3">
+                    <Form.Label>Guests</Form.Label>
+                    <div className="d-flex align-items-center">
+                      <Button
+                        onClick={() => handleGuestChange(-1)}
+                        style={{ backgroundColor: "#FFA100" }}
+                        className="rounded-pill"
+                      >
+                        -
+                      </Button>
+                      <span className="mx-2">{guests}</span>
+                      <Button
+                        onClick={() => handleGuestChange(1)}
+                        style={{ backgroundColor: "#FFA100" }}
+                        className="rounded-pill"
+                      >
+                        +
+                      </Button>
+                    </div>
+                  </Form.Group>
+                )}
+                {errorMessage && (
+                  <Row className="justify-content-center mt-3">
+                    <Col xs={12} md={8}>
+                      <div className="text-center">
+                        <div className="alert alert-danger p-3" role="alert">
+                          {errorMessage}
+                        </div>
+                      </div>
+                    </Col>
+                  </Row>
+                )}
+                {isLoggedIn && !bookingSuccess && (
+                  <Button
+                    variant="primary"
+                    type="button"
+                    style={{ backgroundColor: "#FFA100" }}
+                    onClick={handleBooking}
+                  >
+                    Book Now
+                  </Button>
+                )}
+              </Form>
+              {!isLoggedIn && (
+                <div className="text-center mt-3">
+                  <p>You need to register in order to book.</p>
+                  <Button
+                    variant="primary"
+                    style={{ backgroundColor: "#FFA100" }}
+                  >
+                    Login
+                  </Button>
+                </div>
+              )}
+            </>
+          )}
+          {isLoggedIn && bookingSuccess && (
             <div className="text-center mb-3">
               <div className="alert alert-success" role="alert">
                 Booking created!
               </div>
               <Button
-                variant="primary"
                 style={{ backgroundColor: "#FFA100" }}
                 onClick={() => {
                   // Handle "Check out bookings" button click
@@ -206,73 +293,6 @@ const SingleVenuePage = () => {
                 Check out your bookings!
               </Button>
             </div>
-          ) : (
-            <Form>
-              <Form.Group className="mb-3">
-                <Form.Label>Start Date</Form.Label>
-                <Form.Control
-                  type="date"
-                  placeholder="Choose Start Date"
-                  className="text-muted"
-                  value={dateFrom}
-                  onChange={handledateFromChange}
-                />
-              </Form.Group>
-              <Form.Group className="mb-3">
-                <Form.Label>End Date</Form.Label>
-                <Form.Control
-                  type="date"
-                  placeholder="Choose
-                  End Date"
-                  className="text-muted"
-                  value={dateTo}
-                  onChange={handledateToChange}
-                />
-              </Form.Group>
-              {errorMessage && (
-                <Row className="justify-content-center mt-3">
-                  <Col xs={12} md={8}>
-                    <div className="text-center">
-                      <div className="alert alert-danger p-3" role="alert">
-                        {errorMessage}
-                      </div>
-                    </div>
-                  </Col>
-                </Row>
-              )}
-              <Form.Group className="mb-3">
-                <Form.Label>Guests</Form.Label>
-                <div className="d-flex align-items-center">
-                  <Button
-                    onClick={() => handleGuestChange(-1)}
-                    style={{ backgroundColor: "#FFA100" }}
-                    className="rounded-pill"
-                  >
-                    -
-                  </Button>
-                  <span className="mx-2">{guests}</span>
-                  <Button
-                    onClick={() => handleGuestChange(1)}
-                    style={{ backgroundColor: "#FFA100" }}
-                    className="rounded-pill"
-                  >
-                    +
-                  </Button>
-                </div>
-              </Form.Group>
-              {bookingSuccess ? (
-                <div className="text-center mb-3">Booking created!</div>
-              ) : (
-                <Button
-                  variant="primary"
-                  type="button"
-                  style={{ backgroundColor: "#FFA100" }}
-                  onClick={handleBooking}
-                >
-                  Book Now
-                </Button>
-              )}
-            </Form>
           )}
         </Col>
       </Row>
