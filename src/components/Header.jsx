@@ -6,7 +6,7 @@ const Header = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    // Clear accessToken and apiKey from localStorage
+    // Clear accessToken, apiKey, and venueManager from localStorage
     localStorage.removeItem("accessToken");
     localStorage.removeItem("apiKey");
     localStorage.removeItem("venueManager");
@@ -14,20 +14,17 @@ const Header = () => {
     // Redirect to the login page
     navigate("/Login");
   };
-  console.log(
-    "Venue Manager in localStorage:",
-    localStorage.getItem("venueManager")
-  );
 
+  const isLoggedIn = localStorage.getItem("accessToken") !== null;
   const venueManager = localStorage.getItem("venueManager") === "true";
 
   return (
     <Navbar expand="lg" style={{ backgroundColor: "#FFA100" }}>
       <Container fluid>
-        <Navbar.Brand href="#home">
+        <Navbar.Brand href="/">
           <img
             src="/HOLIDAZE Logo - BigCommerce Store Logo with Transparent Background.png"
-            className="d-inline-block align-top img-fluid "
+            className="d-inline-block align-top img-fluid"
             alt="Your logo"
             style={{ maxWidth: "160px" }}
           />
@@ -38,24 +35,32 @@ const Header = () => {
           className="justify-content-end"
         >
           <Nav className="ml-auto">
-            <Nav.Link href="/" className="text-white ">
+            <Nav.Link href="/" className="text-white">
               Home
             </Nav.Link>
-            <Nav.Link href="#bookings" className="text-white">
-              Bookings
-            </Nav.Link>
-            {venueManager && (
-              <Nav.Link href="/venues" className="text-white">
-                Venues
+            {isLoggedIn ? (
+              <>
+                <Nav.Link href="#bookings" className="text-white">
+                  Bookings
+                </Nav.Link>
+                {venueManager && (
+                  <Nav.Link href="/venues" className="text-white">
+                    Venues
+                  </Nav.Link>
+                )}
+                <Nav.Link
+                  href="#logout"
+                  className="text-white"
+                  onClick={handleLogout}
+                >
+                  Log out
+                </Nav.Link>
+              </>
+            ) : (
+              <Nav.Link href="/Login" className="text-white">
+                Sign In
               </Nav.Link>
             )}
-            <Nav.Link
-              href="#logout"
-              className="text-white"
-              onClick={handleLogout}
-            >
-              Log out
-            </Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Container>
