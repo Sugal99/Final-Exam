@@ -71,9 +71,9 @@ const YourBookings = () => {
     <Container className="mt-5">
       <Row>
         <Col>
-          <h2 className="text-center">Your Bookings </h2>
+          <h2 className="text-center">Bookings </h2>
           <p className="text-center">
-            You currently have {bookings.length} upcoming bookings
+            You have {bookings.length} upcoming bookings.
           </p>
           <hr />
           {bookings.length > 0 ? (
