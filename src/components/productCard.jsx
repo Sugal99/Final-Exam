@@ -14,9 +14,20 @@ const ProductCard = ({ searchTerm }) => {
   useEffect(() => {
     const fetchVenues = async () => {
       try {
-        const { data } = await getAllVenues(true); // Include _owner
-        console.log("Venues data:", data); // Log data to console
-        setVenues(data); // Ensure data is an array
+        const response = await getAllVenues(true); // Include _owner
+        console.log("Venues data:", response.data); // Log data to console
+
+        // Check if the data is an array before sorting
+        if (Array.isArray(response.data)) {
+          // Sort the data by the createdAt date in descending order
+          const sortedData = response.data.sort(
+            (a, b) => new Date(b.created) - new Date(a.created)
+          );
+
+          setVenues(sortedData); // Ensure data is an array
+        } else {
+          console.error("Venues data is not an array:", response.data);
+        }
       } catch (error) {
         console.error("Error fetching venues:", error);
       }
@@ -113,7 +124,7 @@ const ProductCard = ({ searchTerm }) => {
                       maxWidth: "135px",
                     }}
                   >
-                    View Venues
+                    View Venue
                   </Button>
                 </Card.Body>
               </Card>

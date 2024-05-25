@@ -36,9 +36,14 @@ export const getVenueById = async (id, includeOwner = true) => {
 
 export const createVenue = async (venue) => {
   try {
+    const accessToken = localStorage.getItem("accessToken");
+    const apiKey = localStorage.getItem("apiKey");
+
     const response = await fetch(VENUES_ENDPOINT, {
       method: "POST",
       headers: {
+        Authorization: `Bearer ${accessToken}`,
+        "X-Noroff-API-Key": apiKey,
         "Content-Type": "application/json",
       },
       body: JSON.stringify(venue),
