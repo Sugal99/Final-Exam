@@ -66,23 +66,16 @@ export const createBooking = async (booking) => {
       body: JSON.stringify(booking),
     });
 
-    if (response.ok) {
-      // Booking successfully created
-      const data = await response.json();
-      return data;
-    } else if (response.status === 409) {
-      // Conflict - handle accordingly
-      console.error("Conflict occurred:", response.statusText);
-      // You can capture and handle the conflict scenario here
-      throw new Error("Booking conflict occurred");
-    } else {
-      // Handle other error scenarios
+    if (!response.ok) {
       const errorData = await response.json();
       throw new Error(errorData.message || "Failed to create booking");
     }
+
+    const data = await response.json();
+    return data;
   } catch (error) {
     console.error("Error creating booking:", error);
-    throw error; // Propagate the error to the caller
+    throw error;
   }
 };
 
