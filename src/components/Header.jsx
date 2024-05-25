@@ -10,6 +10,8 @@ const Header = () => {
     localStorage.removeItem("accessToken");
     localStorage.removeItem("apiKey");
     localStorage.removeItem("venueManager");
+    localStorage.removeItem("userEmail");
+    localStorage.removeItem("name");
 
     // Redirect to the login page
     navigate("/Login");
@@ -40,7 +42,7 @@ const Header = () => {
             </Nav.Link>
             {isLoggedIn ? (
               <>
-                <Nav.Link href="#bookings" className="text-white">
+                <Nav.Link href="/Bookings" className="text-white">
                   Bookings
                 </Nav.Link>
                 {venueManager && (

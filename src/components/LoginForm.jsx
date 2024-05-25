@@ -81,9 +81,10 @@ const LoginForm = () => {
       console.log("Login successful:", data);
       setSuccess("Login successful! Redirecting...");
 
-      // Store the access token
+      // Store the access token and email
       const accessToken = data.data.accessToken;
       localStorage.setItem("accessToken", accessToken);
+      localStorage.setItem("userName", data.data.name);
 
       // Fetch and/or generate the API key
       const apiKey = await createApiKey(accessToken);
