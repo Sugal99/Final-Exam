@@ -1,14 +1,21 @@
 import React from "react";
 import { Card, Button } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 import { StarFill } from "react-bootstrap-icons";
 import { truncateText } from "./utils/textUtils";
 
 const fallBackImage = "/placeholder.gif";
 
 const BookingCard = ({ booking }) => {
+  const navigate = useNavigate();
+
   const handleImageError = (e) => {
     e.target.onerror = null;
     e.target.src = fallBackImage;
+  };
+
+  const handleViewVenue = () => {
+    navigate(`/SingleVenuePages/${booking.venue.id}`);
   };
 
   return (
@@ -63,6 +70,7 @@ const BookingCard = ({ booking }) => {
             backgroundColor: "#FFA100",
             maxWidth: "135px",
           }}
+          onClick={handleViewVenue}
         >
           View Venue
         </Button>
