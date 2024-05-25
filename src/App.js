@@ -7,6 +7,7 @@ import SingleVenuePage from "./pages/SingleVenuePage"; // Import your ContactPag
 import Register from "./pages/RegisterPage"; // Import your ContactPage component
 import Login from "./pages/LoginPage"; // Import your ContactPage component
 import Venues from "./pages/VenuePage"; // Import your ContactPage component
+import YourBookings from "./pages/BookingsPage"; // Import your ContactPage component
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route path="/Login" element={<Login />} />
           <Route path="/Register" element={<Register />} />
           <Route path="/Venues" element={<Venues />} />
+          <Route path="/Bookings" element={<YourBookings />} />
         </Routes>
       </Layout>
     </Router>
