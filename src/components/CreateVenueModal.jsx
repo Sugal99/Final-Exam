@@ -88,7 +88,7 @@ const CreateVenueModal = ({ show, handleClose }) => {
       <Modal.Header closeButton>
         <Modal.Title>Create Venue</Modal.Title>
       </Modal.Header>
-      <Modal.Body>
+      <Modal.Body style={{ maxHeight: "500px", overflowY: "auto" }}>
         <Form noValidate validated={validated} onSubmit={handleSubmit}>
           <Form.Group controlId="formName">
             <Form.Label>Name</Form.Label>
