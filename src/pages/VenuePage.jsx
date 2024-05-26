@@ -204,8 +204,10 @@ const YourVenues = () => {
                 </Button>
                 <ListGroup className="mt-3">
                   <ListGroup.Item>
+                    {/* Regarding this one, i started to run out time at the end
+                      here and was struggling a bit. */}
                     <strong>Bookings:</strong>{" "}
-                    {bookings[venue.id] ? bookings[venue.id].length : 0}
+                    {bookings[venue.count] ? bookings[venue.count].length : 0}
                   </ListGroup.Item>
                 </ListGroup>
               </Card.Body>
