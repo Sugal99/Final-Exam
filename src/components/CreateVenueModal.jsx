@@ -10,6 +10,8 @@ const CreateVenueModal = ({ show, handleClose }) => {
     maxGuests: "",
   });
 
+  const [validated, setValidated] = useState(false);
+
   const handleChange = (e) => {
     const { name, value, type } = e.target;
     setVenueData((prevData) => ({
@@ -17,15 +19,22 @@ const CreateVenueModal = ({ show, handleClose }) => {
       [name]: type === "number" ? +value : value,
     }));
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const data = await createVenue(venueData);
-      console.log("Venue created:", data);
-      handleClose(); // Close the modal on successful creation
-    } catch (error) {
-      console.error("Error creating venue:", error);
+    const form = e.currentTarget;
+    if (form.checkValidity() === false) {
+      e.stopPropagation();
+    } else {
+      try {
+        const data = await createVenue(venueData);
+        console.log("Venue created:", data);
+        handleClose(); // Close the modal on successful creation
+      } catch (error) {
+        console.error("Error creating venue:", error);
+      }
     }
+    setValidated(true);
   };
 
   return (
@@ -34,7 +43,7 @@ const CreateVenueModal = ({ show, handleClose }) => {
         <Modal.Title>Create Venue</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <Form onSubmit={handleSubmit}>
+        <Form noValidate validated={validated} onSubmit={handleSubmit}>
           <Form.Group controlId="formName">
             <Form.Label>Name</Form.Label>
             <Form.Control
@@ -45,6 +54,9 @@ const CreateVenueModal = ({ show, handleClose }) => {
               onChange={handleChange}
               required
             />
+            <Form.Control.Feedback type="invalid">
+              Please provide a venue name.
+            </Form.Control.Feedback>
           </Form.Group>
 
           <Form.Group controlId="formDescription" className="mt-3">
@@ -58,6 +70,9 @@ const CreateVenueModal = ({ show, handleClose }) => {
               onChange={handleChange}
               required
             />
+            <Form.Control.Feedback type="invalid">
+              Please provide a venue description.
+            </Form.Control.Feedback>
           </Form.Group>
 
           <Form.Group controlId="formPrice" className="mt-3">
@@ -70,6 +85,9 @@ const CreateVenueModal = ({ show, handleClose }) => {
               onChange={handleChange}
               required
             />
+            <Form.Control.Feedback type="invalid">
+              Please provide a price.
+            </Form.Control.Feedback>
           </Form.Group>
 
           <Form.Group controlId="formMaxGuests" className="mt-3">
@@ -82,6 +100,9 @@ const CreateVenueModal = ({ show, handleClose }) => {
               onChange={handleChange}
               required
             />
+            <Form.Control.Feedback type="invalid">
+              Please provide the maximum number of guests.
+            </Form.Control.Feedback>
           </Form.Group>
 
           <Button
