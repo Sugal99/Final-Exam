@@ -23,7 +23,7 @@ const Header = () => {
   };
 
   const Venues = () => {
-    navigate(`/venues`);
+    navigate(`/Venues`);
   };
 
   const Profile = () => {
