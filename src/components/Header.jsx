@@ -22,6 +22,22 @@ const Header = () => {
     navigate(`/Bookings`);
   };
 
+  const Venues = () => {
+    navigate(`/venues`);
+  };
+
+  const Profile = () => {
+    navigate(`/Profile`);
+  };
+
+  const Logout = () => {
+    navigate(`/logout`);
+  };
+
+  const SignIn = () => {
+    navigate(`/Login`);
+  };
+
   const isLoggedIn = localStorage.getItem("accessToken") !== null;
   const venueManager = localStorage.getItem("venueManager") === "true";
 
@@ -55,12 +71,20 @@ const Header = () => {
                   Bookings
                 </Nav.Link>
                 {venueManager && (
-                  <Nav.Link href="/venues" className="text-white">
+                  <Nav.Link
+                    href="/venues"
+                    className="text-white"
+                    onClick={() => Venues()}
+                  >
                     Venues
                   </Nav.Link>
                 )}
 
-                <Nav.Link href="/Profile" className="text-white">
+                <Nav.Link
+                  href="/Profile"
+                  className="text-white"
+                  onClick={() => Profile()}
+                >
                   Profile
                 </Nav.Link>
                 <Nav.Link
@@ -72,7 +96,11 @@ const Header = () => {
                 </Nav.Link>
               </>
             ) : (
-              <Nav.Link href="/Login" className="text-white">
+              <Nav.Link
+                href="/Login"
+                className="text-white"
+                onClick={() => SignIn()}
+              >
                 Sign In
               </Nav.Link>
             )}
