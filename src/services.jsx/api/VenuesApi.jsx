@@ -84,10 +84,15 @@ export const deleteVenue = async (id) => {
     throw error;
   }
 };
+export const searchVenues = async (query, includeOwner = false) => {
+  const queryParams = new URLSearchParams();
+  queryParams.append("q", query);
+  if (includeOwner) {
+    queryParams.append("_owner", true);
+  }
 
-export const searchVenues = async (query) => {
   try {
-    const response = await fetch(`${VENUES_ENDPOINT}/search?q=${query}`);
+    const response = await fetch(`${VENUES_ENDPOINT}/search?${queryParams}`);
     const data = await response.json();
     return data;
   } catch (error) {
