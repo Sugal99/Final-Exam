@@ -16,6 +16,7 @@ import InformationAccordion from "../components/InformationAccordion";
 import LocationAccordion from "../components/LocationAccordion";
 import MetaAccordion from "../components/MetaAccordion";
 import { truncateText } from "../components/utils/textUtils";
+import { useNavigate } from "react-router-dom";
 
 // Fallback images
 const fallBackImage = "/placeholder.gif";
@@ -41,6 +42,11 @@ const SingleVenuePage = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [bookingSuccess, setBookingSuccess] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
+
+  const handleViewVenue = () => {
+    navigate(`/Bookings`);
+  };
 
   useEffect(() => {
     const accessToken = localStorage.getItem("accessToken");
@@ -286,9 +292,7 @@ const SingleVenuePage = () => {
               </div>
               <Button
                 style={{ backgroundColor: "#FFA100" }}
-                onClick={() => {
-                  // Handle "Check out bookings" button click
-                }}
+                onClick={() => handleViewVenue()}
               >
                 Check out your bookings!
               </Button>
