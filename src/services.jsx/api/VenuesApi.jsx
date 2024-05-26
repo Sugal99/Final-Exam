@@ -74,15 +74,24 @@ export const updateVenue = async (venueId, venueData, accessToken, apiKey) => {
   }
 };
 
-export const deleteVenue = async (id) => {
+export const deleteVenue = async (venueId, accessToken, apiKey) => {
   try {
-    const response = await fetch(`${VENUES_ENDPOINT}/${id}`, {
+    const response = await fetch(`${VENUES_ENDPOINT}/${venueId}`, {
       method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        "X-Noroff-API-Key": apiKey,
+      },
     });
-    return response.status === 204;
+    if (response.ok) {
+      console.log("Venue deleted successfully");
+      return true;
+    } else {
+      throw new Error("Failed to delete venue");
+    }
   } catch (error) {
     console.error("Error deleting venue:", error);
-    throw error;
+    return false;
   }
 };
 export const searchVenues = async (query, includeOwner = false) => {

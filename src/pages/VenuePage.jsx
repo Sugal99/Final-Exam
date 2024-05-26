@@ -51,11 +51,14 @@ const YourVenues = () => {
 
   const handleDeleteVenue = async (venueId) => {
     try {
-      await deleteVenue(venueId, accessToken, apiKey);
-      // Remove the deleted venue from the state
-      setVenues((prevVenues) =>
-        prevVenues.filter((venue) => venue.id !== venueId)
-      );
+      const deleted = await deleteVenue(venueId, accessToken, apiKey);
+      if (deleted) {
+        // Venue deleted successfully, perform any additional actions here
+        console.log("Venue deleted successfully");
+      } else {
+        // Failed to delete venue
+        console.log("Failed to delete venue");
+      }
     } catch (error) {
       console.error("Error deleting venue:", error);
     }
