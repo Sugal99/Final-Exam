@@ -3,7 +3,10 @@ import { Container, Row, Col } from "react-bootstrap";
 
 const Footer = () => {
   return (
-    <footer className="py-4 mt-4" style={{ backgroundColor: "#FFA100" }}>
+    <footer
+      className="py-4 mt-4 fixed-relative"
+      style={{ backgroundColor: "#FFA100" }}
+    >
       <Container fluid>
         <Row className="align-items-center">
           <Col
@@ -13,7 +16,7 @@ const Footer = () => {
           >
             <img
               src="/HOLIDAZE Logo - BigCommerce Store Logo with Transparent Background.png"
-              className="d-inline-block align-top img-fluid "
+              className="d-inline-block align-top img-fluid"
               alt="Footer logo"
               style={{ maxWidth: "160px" }}
             />

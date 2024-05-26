@@ -4,8 +4,9 @@ const BASE_URL = "https://v2.api.noroff.dev";
 
 const Profile = () => {
   const [showModal, setShowModal] = useState(false);
+  const fallBackAvatar = "/placeholder.gif";
   const [avatarUrl, setAvatarUrl] = useState(
-    localStorage.getItem("avatarUrl") || ""
+    localStorage.getItem("avatarUrl") || fallBackAvatar
   );
 
   const handleAvatarChange = (e) => {
@@ -17,7 +18,6 @@ const Profile = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // Update avatar URL in the backend API
       const accessToken = localStorage.getItem("accessToken");
       const apiKey = localStorage.getItem("apiKey");
       const response = await fetch(
@@ -46,7 +46,6 @@ const Profile = () => {
       }
     } catch (error) {
       console.error("Error updating avatar:", error);
-      // Handle error scenarios
     }
   };
 
@@ -58,22 +57,30 @@ const Profile = () => {
           alt="Avatar"
           className="rounded-circle border border-black mb-3"
           style={{ width: "150px", height: "150px" }}
+          onError={(e) => {
+            e.target.onerror = null;
+            e.target.src = fallBackAvatar;
+          }}
         />
+        <div className="mb-3">
+          <h4>Hello!</h4>
+          <h4>{userName}</h4>
+        </div>
         <div>
-          <Button
-            variant="primary"
-            onClick={() => setShowModal(true)}
-            style={{ backgroundColor: "#FFA100" }}
-          >
-            Edit Avatar
-          </Button>
-          <Button
-            variant="primary"
-            className="mt-3"
-            style={{ backgroundColor: "#FFA100" }}
-          >
-            View Bookings
-          </Button>
+          <div className="mb-3">
+            <Button
+              variant="primary"
+              onClick={() => setShowModal(true)}
+              style={{ backgroundColor: "#FFA100" }}
+            >
+              Edit Avatar
+            </Button>
+          </div>
+          <div className="mb-3">
+            <Button variant="primary" style={{ backgroundColor: "#FFA100" }}>
+              View Bookings
+            </Button>
+          </div>
         </div>
         <Modal show={showModal} onHide={() => setShowModal(false)}>
           <Modal.Header closeButton>
@@ -81,7 +88,7 @@ const Profile = () => {
           </Modal.Header>
           <Modal.Body>
             <Form onSubmit={handleSubmit}>
-              <Form.Group controlId="avatarUrl">
+              <Form.Group controlId="avatarUrl" className="mb-2">
                 <Form.Label>Avatar URL</Form.Label>
                 <Form.Control
                   type="text"
