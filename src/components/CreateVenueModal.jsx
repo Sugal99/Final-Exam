@@ -8,15 +8,61 @@ const CreateVenueModal = ({ show, handleClose }) => {
     description: "",
     price: "",
     maxGuests: "",
+    media: [], // Ensure media is an array
+    meta: {
+      wifi: false,
+      parking: false,
+      breakfast: false,
+      pets: false,
+    },
+    location: {
+      address: "",
+      city: "",
+      zip: "",
+      country: "",
+    },
   });
 
   const [validated, setValidated] = useState(false);
 
   const handleChange = (e) => {
-    const { name, value, type } = e.target;
+    const { name, value, type, checked } = e.target;
+    if (name.startsWith("media")) {
+      const [_, index, field] = name.split("-");
+      const updatedMedia = [...venueData.media];
+      updatedMedia[index][field] = value;
+      setVenueData((prevData) => ({
+        ...prevData,
+        media: updatedMedia,
+      }));
+    } else if (name in venueData.meta) {
+      setVenueData((prevData) => ({
+        ...prevData,
+        meta: {
+          ...prevData.meta,
+          [name]: type === "checkbox" ? checked : value,
+        },
+      }));
+    } else if (name in venueData.location) {
+      setVenueData((prevData) => ({
+        ...prevData,
+        location: {
+          ...prevData.location,
+          [name]: value,
+        },
+      }));
+    } else {
+      setVenueData((prevData) => ({
+        ...prevData,
+        [name]: type === "number" ? +value : value,
+      }));
+    }
+  };
+
+  const handleAddMedia = () => {
     setVenueData((prevData) => ({
       ...prevData,
-      [name]: type === "number" ? +value : value,
+      media: [...prevData.media, { url: "", alt: "" }],
     }));
   };
 
@@ -103,6 +149,108 @@ const CreateVenueModal = ({ show, handleClose }) => {
             <Form.Control.Feedback type="invalid">
               Please provide the maximum number of guests.
             </Form.Control.Feedback>
+          </Form.Group>
+
+          {venueData.media.map((mediaItem, index) => (
+            <div key={index}>
+              <Form.Group controlId={`formMediaUrl-${index}`} className="mt-3">
+                <Form.Label>Media URL (optional)</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Enter media URL"
+                  name={`media-${index}-url`}
+                  value={mediaItem.url}
+                  onChange={handleChange}
+                />
+              </Form.Group>
+            </div>
+          ))}
+          <Button variant="secondary" onClick={handleAddMedia} className="mt-3">
+            Add Media
+          </Button>
+
+          <Form.Group controlId="formMetaWifi" className="mt-3">
+            <Form.Check
+              type="checkbox"
+              label="Wifi (optional)"
+              name="wifi"
+              checked={venueData.meta.wifi}
+              onChange={handleChange}
+            />
+          </Form.Group>
+
+          <Form.Group controlId="formMetaParking" className="mt-3">
+            <Form.Check
+              type="checkbox"
+              label="Parking (optional)"
+              name="parking"
+              checked={venueData.meta.parking}
+              onChange={handleChange}
+            />
+          </Form.Group>
+
+          <Form.Group controlId="formMetaBreakfast" className="mt-3">
+            <Form.Check
+              type="checkbox"
+              label="Breakfast (optional)"
+              name="breakfast"
+              checked={venueData.meta.breakfast}
+              onChange={handleChange}
+            />
+          </Form.Group>
+
+          <Form.Group controlId="formMetaPets" className="mt-3">
+            <Form.Check
+              type="checkbox"
+              label="Pets (optional)"
+              name="pets"
+              checked={venueData.meta.pets}
+              onChange={handleChange}
+            />
+          </Form.Group>
+
+          <Form.Group controlId="formAddress" className="mt-3">
+            <Form.Label>Address (optional)</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Enter address"
+              name="address"
+              value={venueData.location.address}
+              onChange={handleChange}
+            />
+          </Form.Group>
+
+          <Form.Group controlId="formCity" className="mt-3">
+            <Form.Label>City (optional)</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Enter city"
+              name="city"
+              value={venueData.location.city}
+              onChange={handleChange}
+            />
+          </Form.Group>
+
+          <Form.Group controlId="formZip" className="mt-3">
+            <Form.Label>Zip Code (optional)</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Enter zip code"
+              name="zip"
+              value={venueData.location.zip}
+              onChange={handleChange}
+            />
+          </Form.Group>
+
+          <Form.Group controlId="formCountry" className="mt-3">
+            <Form.Label>Country (optional)</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Enter country"
+              name="country"
+              value={venueData.location.country}
+              onChange={handleChange}
+            />
           </Form.Group>
 
           <Button
