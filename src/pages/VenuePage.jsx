@@ -12,6 +12,8 @@ const YourVenues = () => {
   const [showUpdateModal, setShowUpdateModal] = useState(false); // State for showing the update modal
   const [venues, setVenues] = useState([]);
   const [selectedVenue, setSelectedVenue] = useState(null); // State for storing the selected venue
+  const [showRefreshMessage, setShowRefreshMessage] = useState(false);
+
   const navigate = useNavigate();
 
   const accessToken = localStorage.getItem("accessToken");
@@ -53,8 +55,8 @@ const YourVenues = () => {
     try {
       const deleted = await deleteVenue(venueId, accessToken, apiKey);
       if (deleted) {
-        // Venue deleted successfully, perform any additional actions here
-        console.log("Venue deleted successfully");
+        // Venue deleted successfully, set showRefreshMessage to true
+        setShowRefreshMessage(true);
       } else {
         // Failed to delete venue
         console.log("Failed to delete venue");
@@ -63,7 +65,6 @@ const YourVenues = () => {
       console.error("Error deleting venue:", error);
     }
   };
-
   useEffect(() => {
     const fetchVenues = async () => {
       try {
@@ -89,6 +90,11 @@ const YourVenues = () => {
         venue={selectedVenue} // Pass the selected venue to the UpdateVenueModal component
       />
       <Row>
+        {showRefreshMessage && (
+          <div className="alert alert-info mt-3" role="alert">
+            Venue deleted successfully. Please refresh the page.
+          </div>
+        )}
         <Col className="text-center">
           <h2>Your Venues</h2>
           <Button
