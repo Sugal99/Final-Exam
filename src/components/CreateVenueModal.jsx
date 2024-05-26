@@ -24,6 +24,7 @@ const CreateVenueModal = ({ show, handleClose }) => {
   });
 
   const [validated, setValidated] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -75,7 +76,9 @@ const CreateVenueModal = ({ show, handleClose }) => {
       try {
         const data = await createVenue(venueData);
         console.log("Venue created:", data);
-        handleClose(); // Close the modal on successful creation
+        setSuccessMessage("Venue created successfully!");
+        // Remove the line below to prevent the modal from closing automatically
+        // handleClose(); // Close the modal on successful creation
       } catch (error) {
         console.error("Error creating venue:", error);
       }
@@ -261,6 +264,11 @@ const CreateVenueModal = ({ show, handleClose }) => {
           >
             Create Venue
           </Button>
+          {successMessage && (
+            <div className="alert alert-success mt-3" role="alert">
+              {successMessage}
+            </div>
+          )}
         </Form>
       </Modal.Body>
     </Modal>
