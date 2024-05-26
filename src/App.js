@@ -8,6 +8,7 @@ import Register from "./pages/RegisterPage"; // Import your ContactPage componen
 import Login from "./pages/LoginPage"; // Import your ContactPage component
 import Venues from "./pages/VenuePage"; // Import your ContactPage component
 import YourBookings from "./pages/BookingsPage"; // Import your ContactPage component
+import Profile from "./pages/ProfilePage"; // Import your ContactPage component
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           <Route path="/Register" element={<Register />} />
           <Route path="/Venues" element={<Venues />} />
           <Route path="/Bookings" element={<YourBookings />} />
+          <Route path="/Profile" element={<Profile />} />
         </Routes>
       </Layout>
     </Router>

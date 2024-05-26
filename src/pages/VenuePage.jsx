@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Container, Button, Row, Col, Card } from "react-bootstrap";
+import { Container, Button, Row, Col, Card, ListGroup } from "react-bootstrap";
 import CreateVenueModal from "../components/CreateVenueModal";
-import UpdateVenueModal from "../components/UpdateVenueModal"; // Import the UpdateVenueModal component
-import { getVenuesByProfile, deleteVenue } from "../services.jsx/api/VenuesApi"; // Adjust the import path as needed
+import UpdateVenueModal from "../components/UpdateVenueModal";
+import { getVenuesByProfile, deleteVenue } from "../services.jsx/api/VenuesApi";
 import { StarFill } from "react-bootstrap-icons";
 import { truncateText } from "../components/utils/textUtils";
 import { useNavigate } from "react-router-dom";
@@ -13,6 +13,7 @@ const YourVenues = () => {
   const [venues, setVenues] = useState([]);
   const [selectedVenue, setSelectedVenue] = useState(null); // State for storing the selected venue
   const [showRefreshMessage, setShowRefreshMessage] = useState(false);
+  const [bookings, setBookings] = useState({}); // State for storing venue bookings count
 
   const navigate = useNavigate();
 
@@ -20,7 +21,6 @@ const YourVenues = () => {
   const apiKey = localStorage.getItem("apiKey");
 
   const fallBackImage = "/placeholder.gif";
-  const fallBackAvatar = "/placeholder.gif";
 
   const profileName = localStorage.getItem("userName");
 
@@ -43,11 +43,6 @@ const YourVenues = () => {
     e.target.src = fallBackImage;
   };
 
-  const handleAvatarError = (e) => {
-    e.target.onerror = null;
-    e.target.src = fallBackAvatar;
-  };
-
   const handleShow = () => setShowModal(true);
   const handleClose = () => setShowModal(false);
 
@@ -65,22 +60,33 @@ const YourVenues = () => {
       console.error("Error deleting venue:", error);
     }
   };
+
   useEffect(() => {
-    const fetchVenues = async () => {
+    const fetchData = async () => {
       try {
-        const response = await getVenuesByProfile(
+        const venuesResponse = await getVenuesByProfile(
           profileName,
           accessToken,
           apiKey
         );
-        setVenues(response.data);
+        setVenues(venuesResponse.data);
+
+        const bookingsPromises = venuesResponse.data.map(
+          (venue) => ([venue.id], accessToken, apiKey)
+        );
+        const bookingsResponses = await Promise.all(bookingsPromises);
+        const bookingsData = {};
+        venuesResponse.data.forEach((venue, index) => {
+          bookingsData[venue.id] = bookingsResponses[index];
+        });
+        setBookings(bookingsData);
       } catch (error) {
-        console.error("Error fetching venues:", error);
+        console.error("Error fetching data. Please try again later.");
       }
     };
 
-    fetchVenues();
-  }, [profileName, accessToken, apiKey]);
+    fetchData();
+  }, [profileName, accessToken, apiKey]); // Removed 'bookings' from dependency array
 
   return (
     <Container className="mt-5">
@@ -141,30 +147,6 @@ const YourVenues = () => {
                     Delete
                   </Button>
                 </div>
-                <div className="d-flex align-items-center mb-3">
-                  {venue.owner && venue.owner.avatar && (
-                    <img
-                      src={
-                        venue.owner.avatar.url
-                          ? venue.owner.avatar.url
-                          : fallBackAvatar
-                      }
-                      alt={
-                        venue.owner.avatar.alt
-                          ? venue.owner.avatar.alt
-                          : "Avatar"
-                      }
-                      onError={handleAvatarError}
-                      className="rounded-circle me-2"
-                      style={{ width: "30px", height: "30px" }}
-                    />
-                  )}
-                  {venue.owner && (
-                    <Card.Text className="text-muted">
-                      {venue.owner.name}
-                    </Card.Text>
-                  )}
-                </div>
                 <Card.Title>{truncateText(venue.name, 22)}</Card.Title>
                 <Card.Text>
                   {venue.description
@@ -196,6 +178,13 @@ const YourVenues = () => {
                 >
                   View Venue
                 </Button>
+                {/* Bookings for the venue */}
+                <ListGroup className="mt-3">
+                  <ListGroup.Item>
+                    <strong>Bookings:</strong>{" "}
+                    {bookings[venue.id] ? bookings[venue.id].length : 0}
+                  </ListGroup.Item>
+                </ListGroup>
               </Card.Body>
             </Card>
           </Col>

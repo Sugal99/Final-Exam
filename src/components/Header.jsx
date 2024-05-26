@@ -50,6 +50,10 @@ const Header = () => {
                     Venues
                   </Nav.Link>
                 )}
+
+                <Nav.Link href="/Profile" className="text-white">
+                  Profile
+                </Nav.Link>
                 <Nav.Link
                   href="#logout"
                   className="text-white"
