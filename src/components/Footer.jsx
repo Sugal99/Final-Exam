@@ -15,7 +15,7 @@ const Footer = () => {
             className="text-md-start text-center mb-3 mb-md-0"
           >
             <img
-              src="/HOLIDAZE Logo - BigCommerce Store Logo with Transparent Background.png"
+              src="/logo.png"
               className="d-inline-block align-top img-fluid"
               alt="Footer logo"
               style={{ maxWidth: "160px" }}

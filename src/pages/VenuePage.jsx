@@ -58,7 +58,6 @@ const YourVenues = () => {
       if (deleted) {
         setShowRefreshMessage(true);
       } else {
-        console.log("Failed to delete venue");
       }
     } catch (error) {
       console.error("Error deleting venue:", error);
@@ -74,10 +73,9 @@ const YourVenues = () => {
           apiKey
         );
         setVenues(venuesResponse.data);
-        // Assuming bookings data is part of the venue data
         const bookingsData = {};
         venuesResponse.data.forEach((venue) => {
-          bookingsData[venue.id] = venue.bookings || []; // Assuming venue.bookings is an array
+          bookingsData[venue.id] = venue.bookings || [];
         });
         setBookings(bookingsData);
       } catch (error) {

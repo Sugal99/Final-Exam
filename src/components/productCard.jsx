@@ -3,7 +3,7 @@ import { Card, Button, Row, Col } from "react-bootstrap";
 import { getAllVenues, searchVenues } from "../services.jsx/api/VenuesApi";
 import { truncateText } from "./utils/textUtils";
 import { StarFill } from "react-bootstrap-icons";
-import SearchBar from "./searchbar"; // Import the SearchBar component
+import SearchBar from "./searchbar";
 import { useNavigate } from "react-router-dom";
 
 const fallBackImage = "/placeholder.gif";
@@ -19,26 +19,21 @@ const ProductCard = () => {
   };
 
   useEffect(() => {
-    console.log("Fetching venues...");
     const fetchVenues = async () => {
       try {
         let response;
         if (searchTerm.trim() === "") {
-          // Pass false for includeOwner to exclude owner information
+          //  false for includeOwner to exclude owner information
           response = await getAllVenues(true);
         } else {
-          // Pass true for includeOwner to include owner information
+          // true for includeOwner to include owner information
           response = await searchVenues(searchTerm, true);
         }
-
-        console.log("Venues data before sorting:", response.data);
 
         if (Array.isArray(response.data)) {
           const sortedData = response.data.sort(
             (a, b) => new Date(b.created) - new Date(a.created)
           );
-
-          console.log("Venues data after sorting:", sortedData);
 
           setVenues(sortedData);
         } else {

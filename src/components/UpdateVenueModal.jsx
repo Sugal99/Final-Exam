@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
-import { updateVenue } from "../services.jsx/api/VenuesApi"; // Adjust the import path as needed
+import { updateVenue } from "../services.jsx/api/VenuesApi";
 
 const UpdateVenueModal = ({ show, handleClose, venue, authToken }) => {
   const [venueData, setVenueData] = useState({
@@ -88,9 +88,8 @@ const UpdateVenueModal = ({ show, handleClose, venue, authToken }) => {
           accessToken,
           apiKey
         );
-        console.log("Venue updated:", data);
 
-        setShowRefreshMessage(true); // Show refresh message
+        setShowRefreshMessage(true);
       } catch (error) {
         console.error("Error updating venue:", error);
       }

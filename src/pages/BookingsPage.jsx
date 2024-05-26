@@ -38,7 +38,6 @@ const YourBookings = () => {
         }
 
         const data = await response.json();
-        console.log("Bookings Data:", data);
 
         setBookings(data.data || []);
       } catch (err) {

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
-import { createVenue } from "../services.jsx/api/VenuesApi"; // Adjust the import path as needed
+import { createVenue } from "../services.jsx/api/VenuesApi";
 
 const CreateVenueModal = ({ show, handleClose }) => {
   const [venueData, setVenueData] = useState({
@@ -8,7 +8,7 @@ const CreateVenueModal = ({ show, handleClose }) => {
     description: "",
     price: "",
     maxGuests: "",
-    media: [], // Ensure media is an array
+    media: [],
     meta: {
       wifi: false,
       parking: false,
@@ -75,10 +75,7 @@ const CreateVenueModal = ({ show, handleClose }) => {
     } else {
       try {
         const data = await createVenue(venueData);
-        console.log("Venue created:", data);
         setSuccessMessage("Venue created successfully!");
-        // Remove the line below to prevent the modal from closing automatically
-        // handleClose(); // Close the modal on successful creation
       } catch (error) {
         console.error("Error creating venue:", error);
       }

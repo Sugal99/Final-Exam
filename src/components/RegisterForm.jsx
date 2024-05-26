@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Container, Row, Col, Form, Button, Alert } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
-const BASE_URL = "https://v2.api.noroff.dev"; // Base URL
+const BASE_URL = "https://v2.api.noroff.dev";
 
 const RegisterForm = () => {
   const [formData, setFormData] = useState({
@@ -100,7 +100,7 @@ const RegisterForm = () => {
       setSuccess("Registration successful! You can now log in.");
     } catch (error) {
       console.error("Error registering user:", error);
-      setErrors({ submit: error.message }); // Display the error message
+      setErrors({ submit: error.message });
     }
   };
 
@@ -117,10 +117,10 @@ const RegisterForm = () => {
           >
             <div className="text-center mb-4">
               <img
-                src="/HOLIDAZE Logo - BigCommerce Store Logo with Transparent Background.png" // Replace with your logo image path
+                src="/logo.png"
                 className="d-inline-block align-top img-fluid"
                 alt="logo"
-                style={{ width: "250px", height: "auto", marginLeft: "-2rem" }} // Adjust width and height as needed
+                style={{ width: "250px", height: "auto", marginLeft: "-2rem" }}
               />
             </div>
             <h3 className="text-center mb-3 font-weight-bold text-white">

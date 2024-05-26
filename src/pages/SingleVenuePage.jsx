@@ -48,6 +48,10 @@ const SingleVenuePage = () => {
     navigate(`/Bookings`);
   };
 
+  const LoginToBook = () => {
+    navigate(`/Login`);
+  };
+
   useEffect(() => {
     const accessToken = localStorage.getItem("accessToken");
     setIsLoggedIn(accessToken ? true : false);
@@ -55,7 +59,6 @@ const SingleVenuePage = () => {
     const fetchVenue = async () => {
       try {
         const { data } = await getVenueById(id);
-        console.log("Fetched Venue Data:", data);
         setVenue(data);
       } catch (error) {
         console.error("Error fetching venue:", error);
@@ -101,7 +104,6 @@ const SingleVenuePage = () => {
       };
 
       const createdBooking = await createBooking(booking);
-      console.log("Booking created:", createdBooking);
 
       setdateFrom("");
       setdateTo("");
@@ -278,6 +280,7 @@ const SingleVenuePage = () => {
                   <Button
                     variant="primary"
                     style={{ backgroundColor: "#FFA100" }}
+                    onClick={() => LoginToBook()}
                   >
                     Login
                   </Button>

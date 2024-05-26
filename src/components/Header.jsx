@@ -11,7 +11,8 @@ const Header = () => {
     localStorage.removeItem("apiKey");
     localStorage.removeItem("venueManager");
     localStorage.removeItem("userEmail");
-    localStorage.removeItem("name");
+    localStorage.removeItem("userName");
+    localStorage.removeItem("avatarUrl");
 
     // Redirect to the login page
     navigate("/Login");
@@ -25,7 +26,7 @@ const Header = () => {
       <Container fluid>
         <Navbar.Brand href="/">
           <img
-            src="/HOLIDAZE Logo - BigCommerce Store Logo with Transparent Background.png"
+            src="/logo.png"
             className="d-inline-block align-top img-fluid"
             alt="Your logo"
             style={{ maxWidth: "160px" }}

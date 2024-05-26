@@ -76,7 +76,7 @@ const LoginForm = () => {
       }
 
       const data = await response.json();
-      console.log("API Response Data:", data); // Log the entire data object
+      console.log("API Response Data:", data);
 
       console.log("Login successful:", data);
       setSuccess("Login successful! Redirecting...");
@@ -119,7 +119,7 @@ const LoginForm = () => {
           >
             <div className="text-center mb-4">
               <img
-                src="/HOLIDAZE Logo - BigCommerce Store Logo with Transparent Background.png"
+                src="/logo.png"
                 className="d-inline-block align-top img-fluid"
                 alt="logo"
                 style={{ width: "250px", height: "auto", marginLeft: "-2rem" }}
