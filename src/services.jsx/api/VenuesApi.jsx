@@ -56,20 +56,21 @@ export const createVenue = async (venue) => {
   }
 };
 
-export const updateVenue = async (id, venue) => {
+export const updateVenue = async (venueId, venueData, accessToken, apiKey) => {
   try {
-    const response = await fetch(`${VENUES_ENDPOINT}/${id}`, {
+    const response = await fetch(`${VENUES_ENDPOINT}/${venueId}`, {
       method: "PUT",
       headers: {
+        Authorization: `Bearer ${accessToken}`,
+        "X-Noroff-API-Key": apiKey,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(venue),
+      body: JSON.stringify(venueData),
     });
     const data = await response.json();
     return data;
   } catch (error) {
-    console.error("Error updating venue:", error);
-    throw error;
+    throw new Error("Failed to update venue");
   }
 };
 
@@ -97,6 +98,31 @@ export const searchVenues = async (query, includeOwner = false) => {
     return data;
   } catch (error) {
     console.error("Error searching venues:", error);
+    throw error;
+  }
+};
+
+export const getVenuesByProfile = async (profileName) => {
+  try {
+    const accessToken = localStorage.getItem("accessToken");
+    const apiKey = localStorage.getItem("apiKey");
+    const url = `${BASE_URL}/profiles/${profileName}/venues`;
+    const response = await fetch(url, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        "X-Noroff-API-Key": apiKey,
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching venues:", error);
     throw error;
   }
 };
