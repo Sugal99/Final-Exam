@@ -23,7 +23,8 @@ const UpdateVenueModal = ({ show, handleClose, venue, authToken }) => {
     },
   });
   const [validated, setValidated] = useState(false);
-  const [successMessage, setSuccessMessage] = useState("");
+  const [showRefreshMessage, setShowRefreshMessage] = useState(false);
+
   const accessToken = localStorage.getItem("accessToken");
   const apiKey = localStorage.getItem("apiKey");
 
@@ -89,8 +90,7 @@ const UpdateVenueModal = ({ show, handleClose, venue, authToken }) => {
         );
         console.log("Venue updated:", data);
 
-        setSuccessMessage("Venue updated successfully!");
-        handleClose(); // Close the modal on successful update
+        setShowRefreshMessage(true); // Show refresh message
       } catch (error) {
         console.error("Error updating venue:", error);
       }
@@ -99,7 +99,11 @@ const UpdateVenueModal = ({ show, handleClose, venue, authToken }) => {
   };
 
   return (
-    <Modal show={show} onHide={handleClose}>
+    <Modal
+      show={show}
+      onHide={handleClose}
+      dialogClassName="update-venue-modal"
+    >
       <Modal.Header closeButton>
         <Modal.Title>Update Venue</Modal.Title>
       </Modal.Header>
@@ -235,7 +239,6 @@ const UpdateVenueModal = ({ show, handleClose, venue, authToken }) => {
               onChange={handleChange}
             />
           </Form.Group>
-
           <Form.Group controlId="formZip" className="mt-3">
             <Form.Label>Zip Code (optional)</Form.Label>
             <Form.Control
@@ -264,9 +267,10 @@ const UpdateVenueModal = ({ show, handleClose, venue, authToken }) => {
           >
             Update Venue
           </Button>
-          {successMessage && (
-            <div className="alert alert-success mt-3" role="alert">
-              {successMessage}
+
+          {showRefreshMessage && (
+            <div className="alert alert-info mt-3" role="alert">
+              Venue updated successfully. Please refresh the page.
             </div>
           )}
         </Form>
