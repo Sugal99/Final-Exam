@@ -154,7 +154,7 @@ const SingleVenuePage = () => {
                 ))}
             </div>
           </div>
-          <h2>{truncateText(venue.name)}</h2>
+          <h2>{truncateText(venue.name, 20)}</h2>
         </Col>
       </Row>
       <Row className="justify-content-center mt-5">

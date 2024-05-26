@@ -1,13 +1,20 @@
 import React, { useState } from "react";
 import { Container, Button, Modal, Form } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
+
 const BASE_URL = "https://v2.api.noroff.dev";
 
 const Profile = () => {
   const [showModal, setShowModal] = useState(false);
+  const navigate = useNavigate();
   const fallBackAvatar = "/placeholder.gif";
   const [avatarUrl, setAvatarUrl] = useState(
     localStorage.getItem("avatarUrl") || fallBackAvatar
   );
+
+  const handleViewVenue = (venue) => {
+    navigate(`/Bookings`);
+  };
 
   const handleAvatarChange = (e) => {
     setAvatarUrl(e.target.value);
@@ -77,7 +84,11 @@ const Profile = () => {
             </Button>
           </div>
           <div className="mb-3">
-            <Button variant="primary" style={{ backgroundColor: "#FFA100" }}>
+            <Button
+              variant="primary"
+              style={{ backgroundColor: "#FFA100" }}
+              onClick={() => handleViewVenue()}
+            >
               View Bookings
             </Button>
           </div>
