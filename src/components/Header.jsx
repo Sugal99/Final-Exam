@@ -18,6 +18,10 @@ const Header = () => {
     navigate("/Login");
   };
 
+  const Bookings = () => {
+    navigate(`/Bookings`);
+  };
+
   const isLoggedIn = localStorage.getItem("accessToken") !== null;
   const venueManager = localStorage.getItem("venueManager") === "true";
 
@@ -43,7 +47,11 @@ const Header = () => {
             </Nav.Link>
             {isLoggedIn ? (
               <>
-                <Nav.Link href="/Bookings" className="text-white">
+                <Nav.Link
+                  href=""
+                  className="text-white"
+                  onClick={() => Bookings()}
+                >
                   Bookings
                 </Nav.Link>
                 {venueManager && (
