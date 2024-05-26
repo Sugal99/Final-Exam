@@ -72,7 +72,7 @@ const Header = () => {
                 </Nav.Link>
                 {venueManager && (
                   <Nav.Link
-                    href="/venues"
+                    href="/Venues"
                     className="text-white"
                     onClick={() => Venues()}
                   >
