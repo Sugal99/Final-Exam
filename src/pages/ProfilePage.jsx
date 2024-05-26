@@ -32,19 +32,17 @@ const Profile = () => {
           body: JSON.stringify({
             avatar: {
               url: avatarUrl,
-              alt: "Avatar Image", // You can provide a default alt text here
+              alt: "Avatar Image",
             },
           }),
         }
       );
 
       if (response.ok) {
-        // Update local storage with the new avatar URL
         localStorage.setItem("avatarUrl", avatarUrl);
         setShowModal(false);
       } else {
         console.error("Failed to update avatar:", response.statusText);
-        // Handle error scenarios
       }
     } catch (error) {
       console.error("Error updating avatar:", error);
