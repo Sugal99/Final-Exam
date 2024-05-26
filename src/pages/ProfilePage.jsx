@@ -59,13 +59,22 @@ const Profile = () => {
           className="rounded-circle border border-black mb-3"
           style={{ width: "150px", height: "150px" }}
         />
-        <Button
-          variant="primary"
-          onClick={() => setShowModal(true)}
-          style={{ backgroundColor: "#FFA100" }}
-        >
-          Edit Avatar
-        </Button>
+        <div>
+          <Button
+            variant="primary"
+            onClick={() => setShowModal(true)}
+            style={{ backgroundColor: "#FFA100" }}
+          >
+            Edit Avatar
+          </Button>
+          <Button
+            variant="primary"
+            className="mt-3"
+            style={{ backgroundColor: "#FFA100" }}
+          >
+            View Bookings
+          </Button>
+        </div>
         <Modal show={showModal} onHide={() => setShowModal(false)}>
           <Modal.Header closeButton>
             <Modal.Title>Edit Avatar</Modal.Title>

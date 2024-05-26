@@ -9,11 +9,11 @@ import { useNavigate } from "react-router-dom";
 
 const YourVenues = () => {
   const [showModal, setShowModal] = useState(false);
-  const [showUpdateModal, setShowUpdateModal] = useState(false); // State for showing the update modal
+  const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [venues, setVenues] = useState([]);
-  const [selectedVenue, setSelectedVenue] = useState(null); // State for storing the selected venue
+  const [selectedVenue, setSelectedVenue] = useState(null);
   const [showRefreshMessage, setShowRefreshMessage] = useState(false);
-  const [bookings, setBookings] = useState({}); // State for storing venue bookings count
+  const [bookings, setBookings] = useState({});
 
   const navigate = useNavigate();
 
@@ -21,17 +21,18 @@ const YourVenues = () => {
   const apiKey = localStorage.getItem("apiKey");
 
   const fallBackImage = "/placeholder.gif";
+  const fallBackAvatar = "/placeholder.gif";
 
   const profileName = localStorage.getItem("userName");
 
   const handleUpdateVenue = (venue) => {
-    setSelectedVenue(venue); // Set the selected venue for updating
-    setShowUpdateModal(true); // Show the update modal
+    setSelectedVenue(venue);
+    setShowUpdateModal(true);
   };
 
   const handleCloseUpdateModal = () => {
-    setShowUpdateModal(false); // Close the update modal
-    setSelectedVenue(null); // Reset the selected venue
+    setShowUpdateModal(false);
+    setSelectedVenue(null);
   };
 
   const handleViewVenue = (venue) => {
@@ -43,6 +44,11 @@ const YourVenues = () => {
     e.target.src = fallBackImage;
   };
 
+  const handleAvatarError = (e) => {
+    e.target.onerror = null;
+    e.target.src = fallBackAvatar;
+  };
+
   const handleShow = () => setShowModal(true);
   const handleClose = () => setShowModal(false);
 
@@ -50,10 +56,8 @@ const YourVenues = () => {
     try {
       const deleted = await deleteVenue(venueId, accessToken, apiKey);
       if (deleted) {
-        // Venue deleted successfully, set showRefreshMessage to true
         setShowRefreshMessage(true);
       } else {
-        // Failed to delete venue
         console.log("Failed to delete venue");
       }
     } catch (error) {
@@ -70,14 +74,10 @@ const YourVenues = () => {
           apiKey
         );
         setVenues(venuesResponse.data);
-
-        const bookingsPromises = venuesResponse.data.map(
-          (venue) => ([venue.id], accessToken, apiKey)
-        );
-        const bookingsResponses = await Promise.all(bookingsPromises);
+        // Assuming bookings data is part of the venue data
         const bookingsData = {};
-        venuesResponse.data.forEach((venue, index) => {
-          bookingsData[venue.id] = bookingsResponses[index];
+        venuesResponse.data.forEach((venue) => {
+          bookingsData[venue.id] = venue.bookings || []; // Assuming venue.bookings is an array
         });
         setBookings(bookingsData);
       } catch (error) {
@@ -86,14 +86,14 @@ const YourVenues = () => {
     };
 
     fetchData();
-  }, [profileName, accessToken, apiKey]); // Removed 'bookings' from dependency array
+  }, [profileName, accessToken, apiKey]);
 
   return (
     <Container className="mt-5">
       <UpdateVenueModal
         show={showUpdateModal}
         handleClose={handleCloseUpdateModal}
-        venue={selectedVenue} // Pass the selected venue to the UpdateVenueModal component
+        venue={selectedVenue}
       />
       <Row>
         {showRefreshMessage && (
@@ -123,7 +123,7 @@ const YourVenues = () => {
                 <Card.Img
                   variant="top"
                   src={
-                    venue.media && venue.media[0]
+                    venue.media && venue.media.length > 0
                       ? venue.media[0].url
                       : fallBackImage
                   }
@@ -146,6 +146,30 @@ const YourVenues = () => {
                   >
                     Delete
                   </Button>
+                </div>
+                <div className="d-flex align-items-center mb-3">
+                  {venue.owner && venue.owner.avatar && (
+                    <img
+                      src={
+                        venue.owner.avatar.url
+                          ? venue.owner.avatar.url
+                          : fallBackAvatar
+                      }
+                      alt={
+                        venue.owner.avatar.alt
+                          ? venue.owner.avatar.alt
+                          : "Avatar"
+                      }
+                      onError={handleAvatarError}
+                      className="rounded-circle me-2"
+                      style={{ width: "30px", height: "30px" }}
+                    />
+                  )}
+                  {venue.owner && (
+                    <Card.Text className="text-muted">
+                      {venue.owner.name}
+                    </Card.Text>
+                  )}
                 </div>
                 <Card.Title>{truncateText(venue.name, 22)}</Card.Title>
                 <Card.Text>
@@ -178,7 +202,6 @@ const YourVenues = () => {
                 >
                   View Venue
                 </Button>
-                {/* Bookings for the venue */}
                 <ListGroup className="mt-3">
                   <ListGroup.Item>
                     <strong>Bookings:</strong>{" "}
