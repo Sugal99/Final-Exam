@@ -47,9 +47,9 @@ const LandingPage = () => {
             <br /> Perfect Holiday <br /> Venue with Holidaze!
           </h2>
           <p className="text-muted text-wrap fs-6 mb-4">
-            Lorem ipsum dolor sit amet, consectetur <br />
-            adipiscing elit. Integer sed massa blandit,
-            <br /> faucibus quam sed, feugiat massa.
+            Come Discover Your Ideal <br />
+            Vacation Spot with us!
+            <br />
           </p>
           <Button
             className="rounded-pill"
