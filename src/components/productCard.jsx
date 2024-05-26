@@ -1,17 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { Card, Button, Row, Col } from "react-bootstrap";
-import { Link } from "react-router-dom";
 import { getAllVenues, searchVenues } from "../services.jsx/api/VenuesApi";
 import { truncateText } from "./utils/textUtils";
 import { StarFill } from "react-bootstrap-icons";
 import SearchBar from "./searchbar"; // Import the SearchBar component
+import { useNavigate } from "react-router-dom";
 
 const fallBackImage = "/placeholder.gif";
 const fallBackAvatar = "/placeholder.gif";
 
 const ProductCard = () => {
+  const navigate = useNavigate();
   const [venues, setVenues] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+
+  const handleViewVenue = (venue) => {
+    navigate(`/SingleVenuePages/${venue.id}`);
+  };
 
   useEffect(() => {
     console.log("Fetching venues...");
@@ -73,81 +78,78 @@ const ProductCard = () => {
       <Row xs={1} md={2} lg={3} className="g-4 mt-2">
         {venues.map((venue) => (
           <Col key={venue.id}>
-            <Link to={`/SingleVenuePages/${venue.id}`} className="card-link">
-              <Card className="h-100 position-relative">
-                <div>
-                  <Card.Img
-                    variant="top"
-                    src={
-                      venue.media && venue.media[0]
-                        ? venue.media[0].url
-                        : fallBackImage
-                    }
-                    onError={handleImageError}
-                    className="card-img-top"
-                    style={{ height: "200px", objectFit: "cover" }}
-                  />
+            <Card className="h-100 position-relative">
+              <div>
+                <Card.Img
+                  variant="top"
+                  src={
+                    venue.media && venue.media[0]
+                      ? venue.media[0].url
+                      : fallBackImage
+                  }
+                  onError={handleImageError}
+                  className="card-img-top"
+                  style={{ height: "200px", objectFit: "cover" }}
+                />
+              </div>
+              <Card.Body>
+                <div className="d-flex align-items-center mb-3">
+                  {venue.owner && venue.owner.avatar && (
+                    <img
+                      src={
+                        venue.owner.avatar.url
+                          ? venue.owner.avatar.url
+                          : fallBackAvatar
+                      }
+                      alt={
+                        venue.owner.avatar.alt
+                          ? venue.owner.avatar.alt
+                          : "Avatar"
+                      }
+                      onError={handleAvatarError}
+                      className="rounded-circle me-2"
+                      style={{ width: "30px", height: "30px" }}
+                    />
+                  )}
+                  {venue.owner && (
+                    <Card.Text className="text-muted">
+                      {venue.owner.name}
+                    </Card.Text>
+                  )}
                 </div>
-                <Card.Body>
-                  <div className="d-flex align-items-center mb-3">
-                    {venue.owner && venue.owner.avatar && (
-                      <img
-                        src={
-                          venue.owner.avatar.url
-                            ? venue.owner.avatar.url
-                            : fallBackAvatar
+                <Card.Title>{truncateText(venue.name, 22)}</Card.Title>
+                <Card.Text>
+                  {venue.description
+                    ? truncateText(venue.description, 30)
+                    : "No description available yet!"}
+                </Card.Text>
+                <div className="position-absolute bottom-0 end-0 m-3 py-1">
+                  {Array(5)
+                    .fill()
+                    .map((_, index) => (
+                      <StarFill
+                        key={index}
+                        className={
+                          index < venue.rating
+                            ? "text-warning me-1"
+                            : "text-muted me-1"
                         }
-                        alt={
-                          venue.owner.avatar.alt
-                            ? venue.owner.avatar.alt
-                            : "Avatar"
-                        }
-                        onError={handleAvatarError}
-                        className="rounded-circle me-2"
-                        style={{ width: "30px", height: "30px" }}
                       />
-                    )}
-                    {venue.owner && (
-                      <Card.Text className="text-muted">
-                        {venue.owner.name}
-                      </Card.Text>
-                    )}
-                  </div>
-                  <Card.Title>{truncateText(venue.name, 22)}</Card.Title>
-                  <Card.Text>
-                    {venue.description
-                      ? truncateText(venue.description, 30)
-                      : "No description available yet!"}
-                  </Card.Text>
-                  <div className="position-absolute bottom-0 end-0 m-3 py-1">
-                    {Array(5)
-                      .fill()
-                      .map((_, index) => (
-                        <StarFill
-                          key={index}
-                          className={
-                            index < venue.rating
-                              ? "text-warning me-1"
-                              : "text-muted me-1"
-                          }
-                        />
-                      ))}
-                  </div>
-                  <Card.Text style={{ color: "green" }}>
-                    ${venue.price}
-                  </Card.Text>
-                  <Button
-                    variant="primary"
-                    style={{
-                      backgroundColor: "#FFA100",
-                      maxWidth: "135px",
-                    }}
-                  >
-                    View Venue
-                  </Button>
-                </Card.Body>
-              </Card>
-            </Link>
+                    ))}
+                </div>
+                <Card.Text style={{ color: "green" }}>${venue.price}</Card.Text>
+                <Button
+                  variant="primary"
+                  style={{
+                    backgroundColor: "#FFA100",
+                    maxWidth: "135px",
+                  }}
+                  onClick={() => handleViewVenue(venue)}
+                >
+                  View Venue
+                </Button>
+              </Card.Body>
+            </Card>
           </Col>
         ))}
       </Row>
