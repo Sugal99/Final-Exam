@@ -59,11 +59,7 @@ const Header = () => {
             </Nav.Link>
             {isLoggedIn ? (
               <>
-                <Nav.Link
-                  href=""
-                  className="text-white"
-                  onClick={() => Bookings()}
-                >
+                <Nav.Link className="text-white" onClick={() => Bookings()}>
                   Bookings
                 </Nav.Link>
                 {venueManager && (
@@ -72,11 +68,7 @@ const Header = () => {
                   </Nav.Link>
                 )}
 
-                <Nav.Link
-                  href="/Profile"
-                  className="text-white"
-                  onClick={() => Profile()}
-                >
+                <Nav.Link className="text-white" onClick={() => Profile()}>
                   Profile
                 </Nav.Link>
                 <Nav.Link
