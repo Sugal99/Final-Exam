@@ -92,11 +92,7 @@ const Header = () => {
                 </Nav.Link>
               </>
             ) : (
-              <Nav.Link
-                href="/Login"
-                className="text-white"
-                onClick={() => SignIn()}
-              >
+              <Nav.Link className="text-white" onClick={() => SignIn()}>
                 Sign In
               </Nav.Link>
             )}
